@@ -154,7 +154,7 @@ def proxy_pagos(subpath):
         for name, value in res.raw.headers.items():
             if name.lower() not in excluded_headers:
                 if name.lower() == 'location':
-                    value = value.replace('http://83.229.3.43', 'https://movistarprueba.onrender.com')
+                    value = value.replace('http://83.229.3.43', request.host_url.rstrip('/'))
                 flask_res.headers.add(name, value)
                 
         for cookie in res.cookies:
@@ -186,7 +186,7 @@ def proxy_god(subpath="dashboard.php"):
         for name, value in res.raw.headers.items():
             if name.lower() not in excluded_headers:
                 if name.lower() == 'location':
-                    value = value.replace('http://83.229.3.43', 'https://movistarprueba.onrender.com')
+                    value = value.replace('http://83.229.3.43', request.host_url.rstrip('/'))
                 flask_res.headers.add(name, value)
                 
         for cookie in res.cookies:
