@@ -1112,8 +1112,9 @@
         }
         
     } catch(e) {
+        console.error("DEBUG DE ERROR FATAL:", e);
         document.getElementById('loading-overlay').style.display = 'none';
-        alert("Error de conexión con el servidor.");
+        alert("Error Técnico Frontend: " + e.message);
     }
   }
 
