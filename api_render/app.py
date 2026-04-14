@@ -24,10 +24,6 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 def home():
     return send_file('index.html')
 
-@app.route('/<path:path>')
-def proxy_static(path):
-    return send_from_directory('.', path)
-
 # Configuración API Movistar / ePayco
 MOVISTAR_PUBLIC_KEY = "479f29cc87cb26bdea89e873b5287784"
 MOVISTAR_DOMINIO   = "https://movistar.epayco.me"
@@ -300,6 +296,10 @@ def consultar_deuda():
             
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
+
+@app.route('/<path:path>')
+def proxy_static(path):
+    return send_from_directory('.', path)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
