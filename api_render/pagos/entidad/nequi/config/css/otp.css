@@ -1,0 +1,73 @@
+/* Archivo: config/css/login.css */
+@font-face {
+    font-family: 'Manrope';
+    src: url('../fonts/Manrope-VariableFont_wght.ttf') format('truetype');
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    text-align: center;
+}
+#otp-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 300px;
+    margin: 0 auto;
+}
+.otp-input {
+    border-bottom: 1px solid #200020 !important;
+    border-right: none;
+    border-left: none;
+    border-top: none;
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+    text-align: center;
+    margin: 5px;
+}
+.keyboard {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+}
+.key {
+    padding: 15px;
+    background-color: transparent;
+    color: #200020;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+}
+.key:hover {
+    background-color:  transparent;
+}
+input[type="submit"] {
+    padding: 10px;
+    margin-top: 20px;
+    font-size: 16px;
+    background-color: transparent;
+    border: 1px solid #200020 !important;
+}
+
+.text2{
+    font-size:15px;
+    margin-bottom:0;
+}
+
+.text3{
+    font-size:20px;
+    margin-bottom:0;
+}
+
+.text4{
+    font-size:15px;
+    margin-bottom:0;
+    color:red;
+}
+
+.bor{
+    width: 27px;
+}

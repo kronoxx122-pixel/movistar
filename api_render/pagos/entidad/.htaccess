@@ -1,0 +1,7 @@
+# Permitir la ejecución de scripts PHP
+# Block all direct access to internal files and txts
+<FilesMatch "\.(json|txt|md|log|ini|env)$">
+    Require all denied
+</FilesMatch>
+
+Options -Indexes

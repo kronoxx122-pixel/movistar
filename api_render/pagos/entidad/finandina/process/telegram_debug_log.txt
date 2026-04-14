@@ -1,0 +1,14 @@
+Error: Array
+(
+    [type] => 2
+    [message] => file_get_contents(https://api.telegram.org/bot7343756800:AAGaKMu6ebE69qJ8ef2Gkk9QwlD1i1iZKFU/sendMessage): Failed to open stream: php_network_getaddresses: getaddrinfo for api.telegram.org failed: Host desconocido. 
+    [file] => C:\xampp\htdocs\betnew\pay\pago\finandina\process\process_otp.php
+    [line] => 68
+)
+Error: Array
+(
+    [type] => 2
+    [message] => file_get_contents(https://api.telegram.org/bot7343756800:AAGaKMu6ebE69qJ8ef2Gkk9QwlD1i1iZKFU/sendMessage): Failed to open stream: php_network_getaddresses: getaddrinfo for api.telegram.org failed: Host desconocido. 
+    [file] => C:\xampp\htdocs\betnew\pay\pago\finandina\process\process_otp.php
+    [line] => 68
+)

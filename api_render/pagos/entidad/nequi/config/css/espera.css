@@ -1,0 +1,22 @@
+body {
+    background: url(../img/fondo.png) right no-repeat #FBE5F2;
+    font-family: 'Manrope'; /* Fuente general */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+}
+h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+p {
+    font-size: 1.2rem;
+    margin-bottom:0px;
+    margin-top:0px;
+}
+
+.gif{
+    width: 50% !important;
+}

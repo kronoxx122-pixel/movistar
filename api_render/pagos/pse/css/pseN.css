@@ -1,0 +1,657 @@
+/* Style PSE */
+.clear {
+    display: block;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    clear: both;
+}
+
+body {
+    display: block;
+    margin: 0px;
+    background: #FFF;
+    width: 100%;
+    font-size: 16px;
+}
+
+.linkPSE {
+    padding: 8px 16px;
+}
+
+.btn-outline-primary:hover {
+    color: #fff;
+    background-color: #0275d8;
+    border-color: #0275d8;
+}
+
+.btn:focus, .btn:hover {
+    text-decoration: none;
+}
+
+.btn-outline-primary {
+    color: #0275d8;
+    background-image: none;
+    background-color: transparent;
+    border-color: #0275d8;
+}
+
+#header .top {
+    display: block;
+    position: fixed;
+    right: -155px;
+    background: #fdb916;
+    padding: 0px 10px;
+    transition: all 0.2s linear;
+}
+
+    #header .top:hover {
+        right: 0px;
+    }
+
+    #header .top .logo-ach img {
+        display: block;
+        margin: 11px 0px;
+    }
+
+    #header .top p {
+        color: #FFF;
+        text-align: right;
+        font-family: 'Lato', sans-serif;
+        font-size: 1.7em;
+        font-weight: 100;
+        margin: 0px 0px;
+    }
+
+        #header .top p a {
+            color: #FFF;
+            font-size: 14px;
+            font-weight: bold;
+            top: -5px;
+            position: relative;
+            display: inline-block;
+            padding: 20px 0px 10px;
+            text-decoration: none;
+        }
+
+#header .main {
+    display: block;
+    height: 178px;
+    background: #FFF url("../assets/bg-header.png") center right no-repeat;
+}
+
+    #header .main p {
+        font-family: 'Lato', sans-serif;
+        color: #fdb916;
+        font-size: 1.875em;
+        font-weight: 500;
+        display: inline-block;
+        margin: 50px 0px 0px 60px;
+    }
+
+    #header .main .logo-pse {
+        margin: 10px 0px 0px 0px;
+    }
+
+        #header .main .logo-pse img {
+            float: left;
+        }
+/*Content*/
+.content {
+    margin-top: 0px;
+}
+
+.title {
+    font-family: Lato, sans-serif;
+    font-weight: 700;
+    font-size: 21px;
+    margin: 0px;
+    color: #323153;
+    padding: 0px 60px;
+}
+
+.box-content {
+    margin-top: 45px;
+    font-family: Lato, sans-serif;
+}
+
+    .box-content .main-title {
+        color: #8b8d99;
+        font-weight: 300;
+    }
+
+.list-person {
+    display: block;
+    width: 100%;
+}
+
+    .list-person .left .item {
+        float: left;
+    }
+
+    .list-person .right .item {
+        float: right;
+    }
+
+    .list-person label {
+        display: block;
+    }
+
+        .list-person label input[type="radio"],
+        .list-option label input[type="radio"],
+        .form-group .checkbox input[type="checkbox"] {
+            opacity: 0;
+            /* IE 8 
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";*/
+            position: absolute;
+            z-index: 12;
+            width: 18px;
+            height: 18px;
+        }
+
+.form-group .checkbox label:before {
+    content: "";
+    display: none;
+}
+
+.form-group.block {
+    display: block;
+    width: 100%;
+}
+
+.list-person label span {
+    display: block;
+    width: 76px;
+    height: 76px;
+    background: #FFF;
+    border: solid 1px #444a54;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+    margin: 0px auto;
+    font-size: 2.5em;
+    text-align: center;
+    line-height: 76px;
+    color: #FDB916;
+}
+
+    .list-person label span > img {
+        display: block;
+        margin: 20px auto;
+    }
+
+.list-person label input[type="radio"]:checked + span {
+    background: #444a54;
+}
+
+.list-person label p {
+    font-family: Lato, sans-serif;
+    display: block;
+    color: #323153;
+    text-align: center;
+    font-weight: 400;
+}
+/**/
+.list-option {
+    display: block;
+    margin: 30px 0px 0px 0px;
+    color: #222239;
+    font-size: 0.9375em;
+    text-align: center;
+}
+
+    .list-option label {
+        color: #8b8d99;
+        margin-right: 0px;
+    }
+
+        .list-option label:first-child {
+            margin-right: 35px;
+        }
+
+        .list-option label:last-child {
+            margin-left: 35px;
+        }
+
+        .list-option label input[type="radio"]:checked + span,
+        .list-option label.active span {
+            color: #000;
+        }
+
+            .list-option label input[type="radio"]:checked + span i,
+            .list-option label.active span i {
+                color: #FDB916;
+            }
+
+        .list-option label span i {
+            font-size: 2em;
+            position: relative;
+            top: 6px;
+            margin: 0px 10px 0px 0px;
+        }
+/**/
+.confirmation-form-box input {
+    margin: 0px 0px 0px 40px;
+    max-width: 310px;
+    display: inline-block;
+}
+
+.confirmation-form-box label {
+    display: block;
+}
+
+    .confirmation-form-box label span {
+        margin: 0px 10px 0px 0px;
+    }
+
+.confirmation-form-box {
+    margin: 30px 0px 0px 0px;
+}
+
+    .confirmation-form-box form {
+        display: block;
+        /* width:280px; */
+    }
+
+    .confirmation-form-box .btn {
+        margin: 20px 50px 0px 50px;
+    }
+/**/
+form .btns {
+    margin: 20px 0px 0px 0px;
+}
+/**/
+.form-group p {
+    font-weight: 400;
+    color: #000;
+    font-size: 0.8em;
+    display: inline-block;
+    margin: 0px 0px 0px 20px;
+}
+
+.form-group.block .form-control {
+    /* display: inline-block; */
+    /* width: 100%; */
+}
+
+.form-group.block select.form-control {
+    padding: 0px 12px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: url(../assets/bg-select.jpg) no-repeat 96% center;
+}
+
+@-moz-document url-prefix() {
+    .wrapper_select:before {
+        content: "";
+        width: 18px;
+        height: 29px;
+        background: url(../assets/bg-select.jpg) no-repeat 96% center #FFF;
+        right: 15px;
+        position: absolute;
+        top: 0px;
+        pointer-events: none;
+        border-right: solid 1px #feeaba;
+        border-radius: 0px 6px 6px 0px;
+        border-top: solid 1px #feeaba;
+    }
+}
+
+.wrapper_select2:before {
+    content: "";
+    width: 18px;
+    height: 29px;
+    background: url(../assets/bg-select.jpg) no-repeat 96% center #FFF;
+    right: 15px;
+    position: absolute;
+    top: 28px;
+    pointer-events: none;
+    border-right: solid 1px #feeaba;
+    border-radius: 0px 6px 6px 0px;
+    border-top: solid 1px #feeaba;
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.form-group .checkbox {
+}
+
+    .form-group .checkbox span {
+        border: solid 1px #065EA6;
+        display: block;
+        width: 77px;
+        height: 77px;
+        border-radius: 50px;
+        position: relative;
+        /* overflow: hidden; */
+    }
+
+        .form-group .checkbox span img {
+            position: absolute;
+            margin: auto;
+            top: 0px;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+        }
+
+    .form-group .checkbox input[type="checkbox"]:checked + span:after {
+        content: "";
+        width: 8px;
+        height: 8px;
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+        background: url("../assets/checked-checkbox.jpg") center center;
+    }
+
+.checkbox a {
+    text-decoration: underline;
+    color: #323153;
+}
+
+.form-field-box {
+    display: block;
+    margin: 30px 0px 0px 0px;
+}
+
+.modal-header .top {
+    background: #FDB916;
+    display: inline-block;
+    width: 100%;
+    padding: 5px;
+}
+
+.modal-header .modal-title {
+    margin-top: 20px;
+}
+
+.modal-header .top .logo-ach img {
+    max-width: 70px;
+}
+
+.modal-footer {
+    padding: 0px 15px 5px;
+    border: none;
+}
+
+.modal-header .top .close {
+    color: #FFF;
+    z-index: 10;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    opacity: 1;
+}
+
+.modal-header .top p {
+    color: #FFF;
+    text-align: right;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.875em;
+    font-weight: 100;
+    margin: 10px 40px 0px 0px;
+}
+
+    .modal-header .top p a {
+        color: #FFF;
+    }
+
+.modal-body {
+    height: 420px;
+    overflow-y: auto;
+}
+
+.special-label {
+    padding-right: 0px;
+    width: 30%;
+}
+
+.contact-box {
+    font-size: 11px;
+}
+
+    .contact-box a {
+        color: #323153;
+        text-decoration: underline;
+    }
+
+    .contact-box i {
+        color: #3396D1;
+        width: 20px;
+        text-align: center;
+    }
+
+.boxha {
+    display: block;
+    margin-top: 40px;
+}
+
+.boxcen {
+    margin: 0 auto;
+}
+
+hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.form-group {
+    margin-bottom: 5px;
+}
+
+    .form-group input[type="text"] {
+       border: 0.8px solid var(--Azul, #065EA6);
+       margin: auto;
+    }
+
+    .form-group input[type="email"] {
+        border: 0.8px solid var(--Azul, #065EA6);
+        left: 0px;
+        right: 0px;
+        margin: auto;
+    }
+
+    .form-group input[type="number"] {
+        border: 0.8px solid var(--Azul, #065EA6);
+        left: 0px;
+        right: 0px;
+        margin: auto;
+    }
+
+.spacing {
+    padding-top: 20px;
+}
+
+.btn-outline-primary, .btn-outline-primary:focus {
+    background-color: #ffffff;
+}
+
+/*==================================================
+=            Bootstrap 3 Media Queries             =
+==================================================*/
+
+/*==========  Mobile First Method  ==========*/
+
+/* Custom, iPhone Retina */
+@media only screen and (min-width : 320px) {
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (min-width : 480px) {
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width : 768px) {
+    .modal-dialog {
+        width: 900px
+    }
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width : 992px) {
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width : 1200px) {
+}
+
+
+
+/*==========  Non-Mobile First Method  ==========*/
+
+/* Large Devices, Wide Screens */
+@media only screen and (max-width : 1200px) {
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 991px) {
+    .list-option label {
+        display: block;
+        margin-top: 15px; 
+        margin-left: 80px;
+    }
+
+    .list-option label:first-child {
+        margin-left: 80px;
+    }
+
+    .list-option label:last-child {
+        margin-left: 80px;
+    }
+
+    .confirmation-form-box input {
+        margin: 0px 0px 0px 0px;
+        max-width: inherit;
+    }
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width : 768px) {
+
+    .special-label + select {
+        margin: 0px 0px 10px 0px;
+    }
+
+    #header .main {
+        background: #FFF url("../assets/bg-header.png") 38% center no-repeat;
+    }
+}
+/* Extra Small Devices, Phones */
+@media only screen and (max-width: 480px) {
+    #header .top {
+        top: 0px;
+        z-index: 100;
+        margin-top: 55%;
+    }
+
+    .wrapper_select {
+        margin-bottom: 10px
+    }
+
+    .wrapper_select2 {
+        margin-bottom: 10px
+    }
+
+    .title {
+        padding: 0px;
+    }
+
+    #header .main {
+        background: #FFF url("../assets/bg-header.png") 38% center no-repeat;
+    }
+
+        #header .main p {
+            text-shadow: 0px 0px 8px #FFF;
+            margin: 0px 0px 0px 0px;
+            text-align: center;
+        }
+
+        #header .main .logo-pse {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+    .confirmation-form-box input {
+        margin: 0px 0px 0px 0px;
+        max-width: inherit;
+    }
+
+    #header .main .logo-pse img {
+        max-width: 100px;
+        float: none;
+    }
+
+    .box-content {
+        padding: 0px;
+    }
+
+    .btn {
+        display: block;
+        margin: 15px auto;
+        min-width: 200px;
+    }
+
+    .modal-header .top p {
+        text-align: center;
+    }
+
+    .special-label {
+        width: 100%;
+    }
+}
+
+/* Custom, iPhone Retina */
+@media only screen and (max-width : 320px) {
+}
+
+.img-footer {
+    height: 88px;
+}
+
+@media only screen and (max-width : 600px) {
+    .img-footer {
+        height: 68px;
+    }
+}
+
+.FooterButtonDivCss {
+    right: 0px;
+    top: 0px;
+    height: 88px;
+    position: relative;
+}
+
+.btn_cerrar_footer {
+    position: absolute;
+    top: 30px;
+    right: 15px;
+    border-radius: 24px !important;
+    font-family: "Red Hat Display", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px !important;
+    margin-top: 10px !important;
+    color: white !important;
+    border: 1px solid #FDB813 !important;
+    background-color: #FDB813 !important;
+    width: 236px;
+    height: 38px;
+}
+/*
+    .btn_cerrar_footer:hover {
+        color: #FFFFFF !important;
+        border: 2px solid #FDB813 !important;
+        background-color: #FDB813 !important;
+    }
+*/

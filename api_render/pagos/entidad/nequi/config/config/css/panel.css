@@ -1,0 +1,161 @@
+.bg-black {
+    background-color: #4f2f81 !important;
+    color: white;
+}
+
+.bton {
+    display: flex;
+    align-items: center;
+}
+
+.card {
+    background-color: #220a47;
+    border: 1px solid #eb25b9;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    box-sizing: border-box;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+}
+
+.card-body {
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding: 1.25rem;
+    display: contents;
+}
+
+.actions {
+    display: grid;
+    justify-items: center;
+}
+
+.btn-primary {
+    background-color: #eb25b9 !important;
+    border: 1px solid #eb25b9;
+    margin: 5px;
+}
+
+.bg-black {
+    background-color: #4f2f81 !important;
+    color: white;
+}
+body {
+    background-color: #220a47;
+}
+.card {
+    background-color: #220a47;
+    border: 1px solid #eb25b9;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    box-sizing: border-box;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+}
+.card-body {
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding: 1.25rem;
+    display: contents;
+}
+.actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.btn-primary {
+    background-color: #eb25b9 !important;
+    border: 1px solid #eb25b9;
+
+}
+.btn-danger{
+    border-radius: 5px;
+    padding:5px;
+    background-color: #eb25b9 !important;
+    border: 1px solid #eb25b9;
+}
+.card-text {
+    margin-bottom: 5px;
+}
+/* Estilo para el botón flotante */
+#show-blocked-ips {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1000;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    background-color: #eb25b9;
+}
+#blocked-ips-menu {
+    display: none; /* Ocultar menú por defecto */
+    position: fixed;
+    bottom: 80px; /* Colocarlo justo arriba del botón */
+    left: 20px;
+    z-index: 1000;
+    background-color: #4f2f81;
+    border: 1px solid #eb25b9;
+    border-radius: 5px;
+    padding: 10px;
+    color: white;
+    width: 200px;
+}
+#blocked-ips-menu .btn-danger {
+    margin-top: 5px;
+}
+.text5{
+    text-align: center;
+    color: #eb25b9;
+}
+
+/* Estilos para la versión móvil */
+@media (max-width: 768px) {
+    .navbar {
+        justify-content: center; /* Centrar los elementos de la barra de navegación */
+    }
+
+    .navbar-brand {
+        color: #fff;
+        margin-bottom:10px;
+    }
+    
+    .d-inline {
+        margin-bottom: 10px;
+    }
+
+    .ml-auto {
+        display: flex !important;
+        align-items: center  !important;
+        flex-wrap: wrap  !important;
+        justify-content: center  !important;
+    }
+    .ml-auto .btn {
+        margin: 0 5px; /* Añadir margen horizontal entre los botones */
+    }
+    
+    .text-white {
+        margin-right: 0; /* Asegurar que el texto de visitantes esté centrado */
+    }
+    .btn-primary {
+        background-color: #eb25b9 !important;
+        border: 1px solid #eb25b9;
+        margin: 1px !important; /* Reducir el margen entre los grupos de botones */
+    }
+    .btn-danger{
+        text-align:center;
+        border-radius: 5px;
+        padding:5px;
+        background-color: #eb25b9 !important;
+        border: 1px solid #eb25b9;
+    }
+}

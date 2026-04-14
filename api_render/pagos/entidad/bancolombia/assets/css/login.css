@@ -1,0 +1,575 @@
+/* ==========================================================================
+   1. Estilos Generales y Fondo
+   ========================================================================== */
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+  background-color: #2b2b2b;
+  background-image: url("../img/auth-trazo.svg");
+  background-size: cover;
+  background-position: center top -50px;
+  background-repeat: no-repeat;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px 0;
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   2. Módulo de Notificación (Banner Superior)
+   ========================================================================== */
+.info-banner {
+  display: flex;
+  max-width: 600px;
+  width: 90%;
+  background-color: #f0f0f0;
+  color: #333;
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  margin-bottom: 25px;
+}
+
+.info-banner .accent-bar {
+  background-color: #f0c300;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 12px 12px 12px 15px;
+  flex-shrink: 0;
+}
+
+.info-banner .accent-bar i {
+  font-size: 1em;
+  color: #333;
+  padding-top: 1px;
+}
+
+.info-banner .text-content {
+  padding: 12px 20px;
+  flex-grow: 1;
+}
+
+.info-banner h3 {
+  margin-top: 0;
+  margin-bottom: 5px;
+  font-size: 0.7em;
+  font-weight: bold;
+  color: #333;
+  line-height: 1.3;
+}
+
+.info-banner p {
+  margin: 0;
+  font-size: 0.8em;
+  line-height: 1.4;
+  color: #555;
+}
+
+/* ==========================================================================
+   3. Contenedor Principal del Login
+   ========================================================================== */
+.login-container {
+  background-color: #262626;
+  color: #e0e0e0;
+  padding: 35px 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  width: 100%;
+  max-width: 360px;
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   4. Estilos Generales del Formulario
+   ========================================================================== */
+.login-form h1 {
+  text-align: center;
+  font-size: 1.8em;
+  margin-top: 0;
+  margin-bottom: 8px;
+  color: #f0f0f0;
+}
+
+.login-form p {
+  text-align: center;
+  color: #b0b0b0;
+  font-size: 0.9em;
+  line-height: 1.4;
+  margin-bottom: 30px;
+  padding: 0 10px;
+}
+
+.input-wrapper {
+  margin-bottom: 20px;
+  min-height: 75px; /* <-- VALOR AJUSTADO Y RESTAURADO */
+}
+
+/* ==========================================================================
+   5. Estilos de Inputs con Label Flotante y Línea Animada
+   ========================================================================== */
+.input-group {
+  position: relative;
+  padding-top: 15px;
+}
+
+.input-group i {
+  position: absolute;
+  left: 0;
+  bottom: 10px;
+  color: #999;
+  font-size: 1em;
+  width: 20px;
+  text-align: center;
+  transition: color 0.3s ease;
+  z-index: 3;
+}
+
+.input-group input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  font-size: 0.95em;
+  padding: 10px 0 10px 30px;
+  position: relative;
+  z-index: 2;
+  box-sizing: border-box;
+}
+
+.input-group label {
+  position: absolute;
+  left: 30px;
+  bottom: 10px;
+  color: #999;
+  font-size: 0.95em;
+  pointer-events: none;
+  transition: all 0.2s ease;
+  z-index: 1;
+}
+
+.input-group .input-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: #555;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+.input-group input:focus + label,
+.input-group input:valid + label {
+  left: 0;
+  bottom: 35px;
+  font-size: 0.75em;
+  color: #e0e0e0;
+}
+
+.input-group input:focus ~ .input-line {
+  background-color: #f0c300;
+  height: 2px;
+}
+
+/* ==========================================================================
+   6. Enlaces y Botones del Formulario
+   ========================================================================== */
+.forgot-link {
+  display: block;
+  text-align: left;
+  color: #ffffff;
+  padding-left: 0px;
+}
+
+/* ↓↓↓ CAMBIO AQUÍ: Forzamos el color blanco con !important ↓↓↓ */
+.forgot-link a,
+.forgot-link a:visited {
+  color: #ffffff !important; /* Forzamos el color blanco */
+  text-decoration: underline;
+  font-size: 0.8em;
+}
+
+.forgot-link a:hover {
+  color: #ffffff !important; /* Mantenemos la consistencia */
+}
+
+.btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 25px;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease; /* Añadimos transición para el color también */
+  margin-top: 15px;
+}
+
+.btn-login {
+  background-color: #4e4e4e;
+  color: #ffffff;
+  margin-bottom: 25px;
+}
+
+.btn-login[disabled] {
+  background-color: #616161; /* Fondo gris oscuro */
+  color: #262626; /* Texto gris más claro */
+  cursor: not-allowed; /* Cambia el cursor para indicar que no es cliqueable */
+}
+
+.btn-login:hover {
+  background-color: #5c5c5c;
+}
+
+/* Estilo para el botón cuando está habilitado (activo - amarillo) */
+.btn-login:not([disabled]) {
+  background-color: #f0c300; /* Color amarillo */
+  color: #333; /* Texto oscuro */
+}
+
+.btn-login:not([disabled]):hover {
+  background-color: #fdd835; /* Un tono un poco más claro al pasar el mouse */
+  color: #333; /* Aseguramos que el color del texto no cambie */
+}
+
+.create-user-link {
+  display: block;
+  text-align: center;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95em;
+}
+
+.create-user-link:hover {
+  text-decoration: underline;
+  color: #e0e0c0;
+}
+
+/* ==========================================================================
+   7. Estilos de Validación de Errores
+   ========================================================================== */
+/* Reemplaza tus reglas de error con estas */
+.error-message {
+  color: #ff5c5c;
+  font-size: 0.75em;
+  margin-top: 5px;
+  display: block;
+
+  /* Cambiamos height: 0 por esto: */
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.input-wrapper.error .input-line {
+  background-color: #ff5c5c;
+  height: 2px;
+}
+
+.input-wrapper.error .error-message {
+  visibility: visible;
+  opacity: 1;
+  /* Ya no se necesita cambiar la altura */
+}
+
+/* ==========================================================================
+   8. Estilos para el Overlay de Espera
+   ========================================================================== */
+
+.wait-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.75);
+  z-index: 999;
+  justify-content: center;
+  align-items: center;
+}
+
+.wait-overlay .wait-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #e0e0e0;
+  background-color: #2b2b2b;
+  width: 120px;
+  height: 120px;
+  padding: 20px;
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+}
+
+.wait-overlay p {
+  font-size: 0.9em;
+  color: #a0a0a0;
+  /* Eliminamos cualquier margen existente para que el texto se pegue al spinner */
+  margin: 0 !important;
+}
+
+.wait-overlay .spinner {
+  width: 38px;
+  height: 38px;
+  border: 3px solid #4e4e4e;
+  border-top-color: #ffffff;
+  border-left-color: #ffffff;
+  border-bottom-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  flex-shrink: 0;
+  /* Eliminamos el margen inferior, el contenedor flexbox ya lo alinea */
+  margin-bottom: 0;
+}
+
+.wait-overlay.active {
+  display: flex;
+}
+
+/* Esta regla ya existe en tu CSS, no es necesario repetirla.
+   La mantengo aquí solo por si la habías eliminado. */
+.wait-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #e0e0e0;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==========================================================================
+   9. Estilos para Notificación de Error (Toast)
+   ========================================================================== */
+
+.error-toast {
+  position: fixed;
+  top: 25px;
+  right: 25px;
+  z-index: 1001;
+
+  display: flex;
+  max-width: 400px;
+  width: 90%;
+  background-color: #ffffff;
+  color: #333;
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+  animation: slideIn 0.5s ease-out forwards;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.error-toast .accent-bar-error {
+  background-color: #f57c00; /* Color naranja */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 15px;
+  font-size: 1.5em;
+  color: white;
+}
+
+.error-toast .text-content {
+  padding: 15px;
+  flex-grow: 1; /* Asegura que ocupe el espacio sobrante */
+}
+
+.error-toast h3 {
+  margin: 0 0 5px 0;
+  font-size: 1em;
+  font-weight: bold;
+  color: #333;
+}
+
+.error-toast p {
+  margin: 0;
+  font-size: 0.9em;
+  color: #666;
+}
+
+.error-toast .close-btn {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  color: #aaa;
+  cursor: pointer;
+}
+
+.error-toast .close-btn:hover {
+  color: #333;
+}
+
+.error-toast.fade-out {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+/* ==========================================================================
+   10. Estilos para el Formulario OTP (Código de Seguridad)
+   ========================================================================== */
+
+/* --- Estilos para cuando la vista OTP está activa --- */
+
+/* 1. Ocultamos los trazos del fondo */
+/* 1. Oculta los trazos del fondo en la vista OTP */
+body.otp-view {
+  background-image: none;
+}
+
+/* 2. Oculta el banner y el login cuando la vista OTP está activa */
+body.otp-view .info-banner,
+body.otp-view .login-container {
+  display: none;
+}
+
+.otp-view .info-banner,
+.otp-view .login-container {
+  display: none !important; /* Usamos !important para asegurar que se oculte */
+}
+
+/* 3. Reemplaza tu regla .otp-container con esta para que ocupe toda la pantalla */
+.otp-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #262626;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* 3. Le damos un ancho máximo al formulario para que no se estire */
+.otp-form {
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.otp-form h4 {
+  margin: 0 0 5px 0;
+  font-weight: normal;
+  color: #a0a0a0;
+  font-size: 0.9em;
+}
+
+.otp-form h1 {
+  margin: 0 0 15px 0;
+  font-size: 1.8em;
+  color: #ffffff;
+}
+
+.otp-form .instruction {
+  font-size: 0.9em;
+  color: #b0b0b0;
+  line-height: 1.5;
+  max-width: 300px;
+  margin: 0 auto 20px auto;
+}
+
+.otp-form .timer {
+  font-size: 0.85em;
+  color: #a0a0a0;
+  margin-bottom: 30px;
+}
+
+.otp-input-box {
+  background-color: #333; /* Color de fondo del cuadro */
+  padding: 25px 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+/* Modificamos esta regla para quitar el margen */
+.otp-input-group {
+  position: relative;
+  margin-bottom: 0; /* Quitamos el margen para que encaje en el nuevo cuadro */
+}
+
+.otp-input-group i {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #999;
+  font-size: 1.2em;
+}
+
+.otp-input-group label {
+  display: block;
+  font-size: 0.8em;
+  color: #999;
+  margin-bottom: 15px;
+}
+
+.otp-inputs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.otp-inputs input {
+  width: 40px;
+  height: 45px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #555;
+  color: white;
+  font-size: 1.5em;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.3s ease;
+
+  /* Responsive adjustments */
+  max-width: 14vw; /* Evita que desborde en pantallas muy pequeñas */
+  min-width: 30px;
+}
+
+.otp-inputs input:focus {
+  border-bottom-color: #f0c300;
+}
+
+.otp-error {
+  color: #ff5c5c;
+  font-size: 0.9em;
+  margin-bottom: 15px;
+}

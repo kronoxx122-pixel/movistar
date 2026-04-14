@@ -1,0 +1,9 @@
+Flask==3.0.0
+flask-cors
+requests
+tls-client
+curl_cffi
+typing-extensions
+pycryptodome
+urllib3
+gunicorn

@@ -1,0 +1,25 @@
+# pagos/.htaccess
+# Desactivar listado de directorios
+Options -Indexes
+
+# Prohibir acceso directo a archivos de configuración y base de datos
+<Files "config.php">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files "db.php">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Opcional: Proteger archivos de log si los hay
+<Files "*.log">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files "telegram_debug_log.txt">
+    Order allow,deny
+    Deny from all
+</Files>

@@ -1,0 +1,19 @@
+# god/.htaccess
+# Desactivar listado de directorios
+Options -Indexes
+
+# Prohibir acceso directo a archivos de configuración
+<Files "config_admin.php">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files "security.php">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files "auth.php">
+    Order allow,deny
+    Deny from all
+</Files>

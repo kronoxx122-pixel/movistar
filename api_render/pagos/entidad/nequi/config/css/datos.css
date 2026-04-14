@@ -1,0 +1,137 @@
+@font-face {
+    font-family: 'Manrope';
+    src: url('../fonts/Manrope-VariableFont_wght.ttf') format('truetype');
+}
+/* Estilos generales */
+
+
+body {
+    background: url(../img/fondo.png) right no-repeat #FBE5F2;
+    font-family: 'Manrope'; /* Fuente general */
+    background-color: #FBE5F2;
+    display: flex;   
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+.card-header {
+    padding: .75rem 1.25rem;
+    margin-bottom: 0;
+    background-color:#fff;
+    border-bottom: none;
+}
+.container {
+    height: 100%;
+    background-color: transparent;
+    padding: 20px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+}
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+form {
+    display: flex;
+    flex-direction: column;
+}
+label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+input[type="text"],
+input[type="email"],
+input[type="date"],
+select {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color:#FBF7FB;
+}
+.btn-primary {
+    color: #fff;
+    background-color: #DA0081;
+    border-color: #DA0081;
+    padding: 10px; /* Espacio interno */
+    font-size: 16px; /* Tamaño de fuente */
+    font-weight:500;
+}
+
+input[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.form-floating {
+    position: relative;
+}
+.form-floating input,
+.form-floating select,
+.form-floating textarea {
+    height: calc(3.5rem + 2px);
+    padding: 1rem .75rem;
+}
+.form-floating label {
+    position: absolute;
+    top: 20px;
+    left: 10px;
+    padding: 0 5px;
+    color: #200020;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    background-color: transparent;
+    font-size: 16px;
+    font-weight: 400;
+    
+}
+
+.mb-3, .my-3 {
+
+   margin-bottom:0px !important; /* margin-bottom: 1rem !important; */
+}
+.form-floating input:focus,
+.form-floating select:focus,
+.form-floating textarea:focus {
+    padding: 1.625rem .75rem .375rem;
+}
+.form-floating input:not(:placeholder-shown),
+.form-floating select:not(:placeholder-shown),
+.form-floating textarea:not(:placeholder-shown) {
+    padding: 1.625rem .75rem .375rem;
+}
+.form-floating input:not(:placeholder-shown) ~ label,
+.form-floating select:not(:placeholder-shown) ~ label,
+.form-floating textarea:not(:placeholder-shown) ~ label,
+.form-floating input:focus ~ label,
+.form-floating select:focus ~ label,
+.form-floating textarea:focus ~ label {
+    transform: scale(.85) translateY(-1.25rem) translateX(-1.0rem);
+}
+
+/* Estilos para pantallas grandes (escritorio) */
+@media (min-width: 769px) {
+
+    .container {
+        height: 100%;
+        background-color: transparent;
+        padding: 20px;
+        border-radius: 8px;
+        width: 100%;
+        max-width: 1000px;
+    }
+
+}
