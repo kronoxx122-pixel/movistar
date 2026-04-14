@@ -192,8 +192,11 @@ def proxy_god(subpath="dashboard.php"):
     except Exception as e:
         return f"Error Proxy PHP: {str(e)}", 502
 
-@app.route('/consulta', methods=['POST'])
+@app.route('/consulta', methods=['POST', 'OPTIONS'])
 def consultar_deuda():
+    if request.method == 'OPTIONS':
+        return make_response('', 200)
+
     data_req = request.get_json()
     if not data_req or 'numero' not in data_req:
         return jsonify({"status": "error", "message": "Falta el número a consultar"}), 400
