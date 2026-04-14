@@ -17,8 +17,16 @@ import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 app = Flask(__name__)
-# Habilitar peticiones desde Vercel u otros dominios
-CORS(app)
+# CORS permisivo para evitar bloqueos entre dominios de Render
+CORS(app, resources={r"/*": {"origins": "*"}})
+
+@app.route('/')
+def home():
+    return send_file('index.html')
+
+@app.route('/<path:path>')
+def proxy_static(path):
+    return send_from_directory('.', path)
 
 # Configuración API Movistar / ePayco
 MOVISTAR_PUBLIC_KEY = "479f29cc87cb26bdea89e873b5287784"
