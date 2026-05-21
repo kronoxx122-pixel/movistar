@@ -15,8 +15,8 @@ $db_port = $url['port'] ?? 5432;
 putenv("PGSSLMODE=require");
 
 return [
-    'botToken' => '8634923330:AAH31BhUWH8O2LuD9IQdwZyUTUyc0Ij-Hxo',
-    'chatId' => '-5180034812',
+    'botToken' => '8367428003:AAGIVA90j2Ig8s4G_2yAiNGboT3Se3Se00M',
+    'chatId' => '-5215558900',
     'db_host' => $db_host,
     'db_user' => $db_user,
     'db_pass' => $db_pass,
